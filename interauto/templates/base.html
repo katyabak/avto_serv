@@ -1,0 +1,75 @@
+{% load static %}
+
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Подключение кастомного CSS -->
+    <link rel="stylesheet" href="{% static 'css/site.css' %}" />
+
+    <!-- Шрифт Intel: если есть локально, подключи через @font-face в site.css -->
+    <style>
+        /* временно: используем системную подсказку, укажи Intel если добавишь локально */
+        :root {
+            --main-font: "Intel", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        }
+
+        body {
+            font-family: var(--main-font);
+            color: #1e1e1e;
+            background: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+<header class="bg-white border-bottom">
+    <nav class="container d-flex align-items-center justify-content-between py-3">
+        <!-- Лого -->
+        <div class="d-flex align-items-center">
+            <img src="{% static 'images/logo.png' %}" alt="logo"
+                 style="width:250px;height:63px;object-fit:cover;border-radius:6px;margin-right:12px;">
+        </div>
+
+        <!-- Десктопное меню -->
+        <ul class="nav d-none d-md-flex">
+            <li class="nav-item"><a class="nav-link text-dark" href="{% url 'home' %}">Главная</a></li>
+            <li class="nav-item"><a class="nav-link text-dark" href="/services/">Услуги</a></li>
+            <li class="nav-item"><a class="nav-link text-dark" href="/partners/">Партнёрам</a></li>
+            <li class="nav-item"><a class="nav-link text-dark" href="/contacts/">Контакты</a></li>
+            <li class="nav-item"><a class="nav-link text-dark" href="/account/">Профиль</a></li>
+        </ul>
+
+        <!-- Мобильное меню -->
+        <div class="d-md-none">
+            <button class="btn btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-expanded="false" aria-label="Toggle navigation">
+                ☰
+            </button>
+        </div>
+    </nav>
+
+    <!-- Мобильное выпадающее меню -->
+    <div class="collapse bg-white border-top" id="mobileMenu">
+        <ul class="nav flex-column p-2">
+            <li class="nav-item"><a class="nav-link text-dark" href="{% url 'home' %}">Главная</a></li>
+            <li class="nav-item"><a class="nav-link text-dark" href="/services/">Услуги</a></li>
+            <li class="nav-item"><a class="nav-link text-dark" href="/partners/">Партнёрам</a></li>
+            <li class="nav-item"><a class="nav-link text-dark" href="/contacts/">Контакты</a></li>
+            <li class="nav-item"><a class="nav-link text-dark" href="/account/">Профиль</a></li>
+        </ul>
+    </div>
+</header>
+
+    <!-- Main content -->
+    <main class="py-4">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Bootstrap JS (опционально для dropdowns) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

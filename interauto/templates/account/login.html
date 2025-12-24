@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+{% load form_tags %}
+<div class="container py-5" style="max-width: 400px;">
+  <h2 class="fw-bold mb-4 text-center">Вход</h2>
+  {% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+  {% endif %}
+  <form method="POST">
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="mb-3 position-relative">
+        {{ field.label_tag }}
+        {% if field.name == 'password' %}
+          <input type="password" name="{{ field.html_name }}" id="password-field" class="form-control" />
+          <button type="button" id="toggle-password" class="btn btn-sm btn-outline-secondary mt-1">Показать пароль</button>
+        {% else %}
+          {{ field|add_class:"form-control" }}
+        {% endif %}
+        {% if field.errors %}
+          <div class="text-danger">{{ field.errors }}</div>
+        {% endif %}
+      </div>
+    {% endfor %}
+    <button type="submit" class="btn w-100" style="background-color: #334B5B; color: #ffffff;">Войти</button>
+  </form>
+  <p class="mt-3 text-center">Нет аккаунта? <a href="/account/register/">Зарегистрироваться</a></p>
+</div>
+
+<script>
+  const toggleBtn = document.getElementById('toggle-password');
+  const passwordField = document.getElementById('password-field');
+
+  toggleBtn.addEventListener('click', () => {
+    if (passwordField.type === 'password') {
+      passwordField.type = 'text';
+      toggleBtn.textContent = 'Скрыть пароль';
+    } else {
+      passwordField.type = 'password';
+      toggleBtn.textContent = 'Показать пароль';
+    }
+  });
+</script>
+{% endblock %}

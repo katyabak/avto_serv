@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container px-3">
+
+    <!-- Hero -->
+    <div class="bg-secondary rounded-3 overflow-hidden" style="min-height: 420px;">
+        <div class="row g-0">
+
+            <!-- Левый блок -->
+            <div class="col-12 col-lg-6 p-5 d-flex flex-column justify-content-center" style="background-color: #d6d2d2;">
+                <h1 class="fw-bold display-6" style="color: #1e1e1e;">
+                    Автокомплекс по продаже запчастей и ремонту автомобилей
+                </h1>
+                <p class="lead" style="color: #1e1e1e;">
+                    Запчасти, ремонт, консультации и сервис в одном месте
+                </p>
+            </div>
+
+            <!-- Правый блок: картинка с оверлеем -->
+            <div class="col-12 col-lg-6 position-relative" style="min-height: 420px; background-color: #ffffff">
+                <img src="{% static 'images/dark_home.png' %}" alt="Автосервис"
+                     class="w-100 h-100 object-fit-cover" style="object-fit:cover;">
+
+                <div class="position-absolute top-50 start-50 translate-middle text-center">
+                    <p class="mb-3" style="color: #e9e7e5;">
+                        Надёжность, качество и внимание к каждому клиенту
+                    </p>
+                    <a href="/account/" class="btn" style="background:#95444d; color:#ffffff; padding: .75rem 2.5rem; border-radius:10px;">
+                        Оформить заявку
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Почему выбирают нас -->
+<section class="text-center my-5">
+    <h2 class="fw-bold mb-4">Почему выбирают именно нас?</h2>
+    <div class="row g-4">
+        <div class="col-12 col-md-4">
+            <div class="card bg-light text-dark border-0 h-100 p-3">
+                <!-- Картинка -->
+                <img src="{% static 'images/feature1.jpg' %}" alt="Пример 1" class="mb-3 w-100" style="height:160px; object-fit:cover; border-radius:6px;">
+                <h5 class="card-title">Пример 1</h5>
+                <p class="card-text">Короткий текст-пример.</p>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="card bg-light text-dark border-0 h-100 p-3">
+                <img src="{% static 'images/feature2.jpg' %}" class="mb-3 w-100" style="height:160px; object-fit:cover; border-radius:6px;">
+                <h5 class="card-title">Работаем 24/7</h5>
+                <p class="card-text">Короткий текст-пример.</p>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="card bg-light text-dark border-0 h-100 p-3">
+                <img src="{% static 'images/feature3.jpg' %}" alt="Исправная техника" class="mb-3 w-100" style="height:160px; object-fit:cover; border-radius:6px;">
+                <h5 class="card-title">Исправная техника</h5>
+                <p class="card-text">Короткий текст-пример.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+    <!-- Партнёры -->
+    <section class="text-center my-5" style="background:#ffffff;">
+        <h2 class="fw-bold mb-4">Наши партнёры</h2>
+        <div class="d-flex flex-wrap justify-content-center gap-3 align-items-center">
+            <img src="{% static 'images/partner1.png' %}" alt="partner" style="height:140px;object-fit:contain;">
+            <img src="{% static 'images/partner2.png' %}" alt="partner" style="height:140px;object-fit:contain;">
+            <img src="{% static 'images/partner3.png' %}" alt="partner" style="height:140px;object-fit:contain;">
+            <img src="{% static 'images/partner1.png' %}" alt="partner" style="height:140px;object-fit:contain;">
+        </div>
+    </section>
+
+</div>
+{% endblock %}

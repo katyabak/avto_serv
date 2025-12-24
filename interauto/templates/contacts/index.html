@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Заголовок -->
+    <h2 class="fw-bold mb-4">Контакты</h2>
+
+    <!-- Текст -->
+    <div class="mb-4" style="text-align: left; color: #1e1e1e;">
+        <p><strong>Главный офис компании «ИНТЕРАВТО»</strong> находится по адресу:<br>
+        644073, Омск, Кировский округ, Солнечная 2-я улица, 46Б, 1 этаж</p>
+
+        <p><strong>Телефоны:</strong><br>
+        +7 (3812) 63‒77‒73<br>
+        +7‒913‒688‒29‒67</p>
+
+        <p><strong>E-mail:</strong> interavto-servis@yandex.ru</p>
+        <p><strong>E-mail для заказов:</strong> orders@email.com</p>
+        <p><strong>Skype:</strong> skype_example</p>
+    </div>
+
+    <!-- Картинка -->
+    <div class="text-left">
+        <img src="{% static 'images/office.png' %}" alt="Офис ИнтерАвто" class="img-fluid rounded" style="max-width: 100%; height: auto;">
+    </div>
+</div>
+{% endblock %}
