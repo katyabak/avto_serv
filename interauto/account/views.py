@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from .forms import RegisterForm, LoginForm, ClientUpdateForm
 from django.contrib.auth.decorators import login_required
+from .forms import ApplicationForm
+from .models import ClientApplication
 
 
 @login_required(login_url='/account/login/')
@@ -57,6 +59,34 @@ def login_view(request):
 @login_required(login_url='/account/login/')
 def application(request):
     return render(request, 'account/application.html')
+
+
+@login_required(login_url='/account/login/')
+def application(request):
+    user = request.user
+
+    if request.method == 'POST':
+        form = ApplicationForm(request.POST)
+
+        if form.is_valid():
+            application = form.save(commit=False)
+            application.client = user
+            application.save()
+
+            return redirect('/account/application/success/')
+
+    else:
+        form = ApplicationForm()
+
+    return render(request, 'account/application.html', {
+        'form': form,
+        'user': user
+    })
+
+
+@login_required(login_url='/account/login/')
+def application_success(request):
+    return render(request, 'account/application_success.html')
 
 
 @login_required(login_url='/account/login/')

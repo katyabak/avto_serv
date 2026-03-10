@@ -1,7 +1,35 @@
 {% extends "base.html" %}
 {% load form_tags %}
+
 {% block content %}
-<div class="container py-5">
-    <h2 class="text-center">Оформление заявки</h2>
+<div class="container py-5" style="max-width:500px;">
+
+    <h2 class="text-center mb-4 fw-bold">Оформление заявок</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <p><strong>Имя:</strong> {{ user.first_name }}</p>
+        <p><strong>Фамилия:</strong> {{ user.last_name }}</p>
+        <p><strong>Отчество:</strong> {{ user.middle_name }}</p>
+        <p><strong>Телефон:</strong> {{ user.phone_number }}</p>
+
+        <div class="mb-3">
+            {{ form.detail.label_tag }}
+            {{ form.detail|add_class:"form-control" }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.comment.label_tag }}
+            {{ form.comment|add_class:"form-control" }}
+        </div>
+
+        <button type="submit" class="btn btn-success w-100">
+            Оформить заявку
+        </button>
+        <a href="/account/" class="btn w-100 mt-2 btn-secondary">Вернуться в профиль</a>
+
+    </form>
+
 </div>
 {% endblock %}

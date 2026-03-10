@@ -3,6 +3,7 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.forms import SetPasswordForm
 from .models import Client
+from .models import ClientApplication
 
 
 class RegisterForm(forms.ModelForm):
@@ -69,3 +70,35 @@ class CustomSetPasswordForm(SetPasswordForm):
         self.fields['new_password1'].label = 'Новый пароль'
         self.fields['new_password2'].label = 'Подтверждение нового пароля'
         self.fields['new_password1'].error_messages['password_mismatch'] = 'Пароли не совпадают'
+
+
+class ApplicationForm(forms.ModelForm):
+
+    DETAIL_CHOICES = [
+        ('Запчасть1', 'Запчасть1'),
+        ('Запчасть2', 'Запчасть2'),
+        ('Запчасть3', 'Запчасть3'),
+        ('Запчасть4', 'Запчасть4'),
+        ('Запчасть5', 'Запчасть5'),
+        ('Запчасть6', 'Запчасть6'),
+        ('Запчасть7', 'Запчасть7'),
+        ('Запчасть8', 'Запчасть8'),
+        ('Запчасть9', 'Запчасть9'),
+        ('Запчасть10', 'Запчасть10'),
+    ]
+
+    detail = forms.ChoiceField(
+        choices=DETAIL_CHOICES,
+        label="Запчасть"
+    )
+
+    comment = forms.CharField(
+        label="Комментарий",
+        max_length=100,
+        required=False,
+        widget=forms.Textarea(attrs={'rows':3})
+    )
+
+    class Meta:
+        model = ClientApplication
+        fields = ['detail', 'comment']

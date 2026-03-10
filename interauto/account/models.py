@@ -1,5 +1,25 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.conf import settings
+
+
+class ClientApplication(models.Model):
+    client = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='applications'
+    )
+
+    detail = models.CharField(max_length=100)
+    comment = models.CharField(max_length=100, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'account_client_applications'
+
+    def __str__(self):
+        return f'Заявка {self.id}'
 
 
 class ClientManager(BaseUserManager):
@@ -51,4 +71,3 @@ class Client(AbstractBaseUser, PermissionsMixin):
 
     def has_module_perms(self, app_label):
         return self.is_admin
-
