@@ -55,6 +55,11 @@ def login_view(request):
 
 
 @login_required(login_url='/account/login/')
+def application(request):
+    return render(request, 'account/application.html')
+
+
+@login_required(login_url='/account/login/')
 def logout_view(request):
     logout(request)
     return redirect('/account/login/')

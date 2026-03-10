@@ -8,6 +8,7 @@ urlpatterns = [
     path('login/', views.login_view, name='account_login'),
     path('register/', views.register, name='account_register'),
     path('logout/', views.logout_view, name='account_logout'),
+    path('application/', views.application, name='account_application'),
 
     # Сброс пароля — ввод email
     path('password_reset/', auth_views.PasswordResetView.as_view(
