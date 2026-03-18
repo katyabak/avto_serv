@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% load form_tags %}
+
+{% block content %}
+<style>
+.active-tab {
+    background-color: #334B5B;
+    color: white;
+    border: none;
+}
+
+.active-tab:hover {
+    background-color: #334B5B;
+    color: white;
+}
+
+.inactive-tab {
+    background-color: white;
+    color: #334B5B;
+    border: 1px solid #334B5B;
+}
+
+.inactive-tab:hover {
+    background-color: white;
+    color: #334B5B;
+    border: 1px solid #334B5B;
+}
+
+</style>
+<div class="container py-5">
+    <h2 class="fw-bold mb-4 text-center">Админ-панель</h2>
+
+    <div class="row">
+        <!-- ЛЕВОЕ МЕНЮ -->
+        <div class="col-3">
+            <button onclick="switchTab('clients')"
+                    class="btn w-100 mb-2 {% if tab == 'clients' %}active-tab{% else %}inactive-tab{% endif %}">
+                Клиенты
+            </button>
+
+            <button onclick="switchTab('applications')"
+                    class="btn w-100 {% if tab == 'applications' %}active-tab{% else %}inactive-tab{% endif %}">
+                Заявки клиентов
+            </button>
+            <a href="/account/" class="btn w-100 mt-2 btn-secondary">Вернуться в профиль</a>
+        </div>
+
+        <!-- ПРАВАЯ ЧАСТЬ -->
+        <div class="col-9">
+
+            {% if tab == 'clients' %}
+            <h4 class="mb-3">Список клиентов</h4>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Email</th>
+                    <th>ФИО</th>
+                    <th>Телефон</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for client in clients %}
+                <tr>
+                    <td>{{ client.id }}</td>
+                    <td>{{ client.email }}</td>
+                    <td>
+                        {{ client.last_name }}
+                        {{ client.first_name }}
+                        {{ client.middle_name }}
+                    </td>
+                    <td>{{ client.phone_number }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+
+            {% if tab == 'applications' %}
+            <h4 class="mb-3">Заявки клиентов</h4>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>ФИО</th>
+                    <th>Телефон</th>
+                    <th>Запчасть</th>
+                    <th>Комментарий</th>
+                    <th>Дата</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for app in applications %}
+                <tr>
+                    <td>{{ app.id }}</td>
+                    <td>
+                        {{ app.client.last_name }}
+                        {{ app.client.first_name }}
+                        {{ app.client.middle_name }}
+                    </td>
+                    <td>{{ app.client.phone_number }}</td>
+                    <td>{{ app.detail }}</td>
+                    <td>{{ app.comment }}</td>
+                    <td>{{ app.created_at }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+<script>
+function switchTab(tabName) {
+    const url = new URL(window.location);
+    url.searchParams.set('tab', tabName);
+
+    // заменяет URL БЕЗ добавления в историю
+    window.history.replaceState({}, '', url);
+
+    // перезагрузка страницы
+    window.location.reload();
+}
+
+</script>
+{% endblock %}

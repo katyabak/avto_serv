@@ -3,7 +3,8 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import RegisterForm, LoginForm, ClientUpdateForm
 from django.contrib.auth.decorators import login_required
 from .forms import ApplicationForm
-from .models import ClientApplication
+from .models import Client, ClientApplication
+from django.http import Http404
 
 
 @login_required(login_url='/account/login/')
@@ -54,6 +55,28 @@ def login_view(request):
     else:
         form = LoginForm()
     return render(request, 'account/login.html', {'form': form})
+
+
+@login_required(login_url='/account/login/')
+def admin_panel(request):
+    if not request.user.is_staff:
+        raise Http404("Такой страницы не существует")
+
+    tab = request.GET.get('tab', 'clients')
+
+    clients = None
+    applications = None
+
+    if tab == 'clients':
+        clients = Client.objects.all()
+    elif tab == 'applications':
+        applications = ClientApplication.objects.select_related('client').all()
+
+    return render(request, 'account/admin_panel.html', {
+        'tab': tab,
+        'clients': clients,
+        'applications': applications
+    })
 
 
 @login_required(login_url='/account/login/')
