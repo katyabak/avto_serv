@@ -5,11 +5,11 @@
 <div class="container px-3">
 
     <!-- Hero -->
-    <div class="bg-secondary rounded-3 overflow-hidden" style="min-height: 420px;">
-        <div class="row g-0">
+    <div class="bg-secondary rounded-3 overflow-hidden" style="height: 420px;"> <!-- было min-height, стало height -->
+        <div class="row g-0 h-100"> <!-- добавил h-100, чтобы дочерние блоки тоже заняли всю высоту -->
 
             <!-- Левый блок -->
-            <div class="col-12 col-lg-6 p-5 d-flex flex-column justify-content-center"
+            <div class="col-12 col-lg-6 p-5 d-flex flex-column justify-content-center h-100"
                  style="background-color: #334B5B;">
                 <h1 class="fw-bold display-6" style="color: #ffffff;">
                     Автокомплекс по продаже запчастей и ремонту автомобилей
@@ -20,7 +20,7 @@
             </div>
 
             <!-- Правый блок: картинка с оверлеем -->
-            <div class="col-12 col-lg-6 position-relative" style="min-height: 420px; background-color: #ffffff">
+            <div class="col-12 col-lg-6 position-relative h-100" style="background-color: #ffffff">
                 <img src="{% static 'images/dark_home.png' %}" alt="Автосервис"
                      class="w-100 h-100 object-fit-cover" style="object-fit:cover;">
 
@@ -75,10 +75,17 @@
     <section class="text-center my-5" style="background:#ffffff;">
         <h2 class="fw-bold mb-4">Наши партнёры</h2>
         <div class="d-flex flex-wrap justify-content-center gap-3 align-items-center">
-            <img src="{% static 'images/partner1.png' %}" alt="partner" style="height:140px;object-fit:contain;">
-            <img src="{% static 'images/partner2.png' %}" alt="partner" style="height:140px;object-fit:contain;">
-            <img src="{% static 'images/partner3.png' %}" alt="partner" style="height:140px;object-fit:contain;">
-            <img src="{% static 'images/partner1.png' %}" alt="partner" style="height:140px;object-fit:contain;">
+            <img src="{% static 'images/partners/omsk_dizel.png' %}" alt="partner"
+                 style="height:140px;object-fit:contain;">
+            <img src="{% static 'images/partners/dinamika_sveta.jpg' %}" alt="partner"
+                 style="height:140px;object-fit:contain;">
+            <img src="{% static 'images/partners/greenlight.png' %}" alt="partner"
+                 style="height:90px;object-fit:contain;">
+            <img src="{% static 'images/partners/auto_aliyans.jpg' %}" alt="partner"
+                 style="height:120px;object-fit:contain;">
+            <img src="{% static 'images/partners/avtozavod.png' %}" alt="partner"
+                 style="height:90px;object-fit:contain;">
+            <img src="{% static 'images/partners/cmz_ao.jpg' %}" alt="partner" style="height:100px;object-fit:contain;">
         </div>
     </section>
 
