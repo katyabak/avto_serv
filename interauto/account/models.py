@@ -13,6 +13,11 @@ class ClientApplication(models.Model):
     detail = models.CharField(max_length=100)
     comment = models.CharField(max_length=100, blank=True)
 
+    delivery = models.CharField(max_length=20, default='delivery')
+    payment_method = models.CharField(max_length=20, default='card')
+    reservation = models.CharField(max_length=5, default='no')
+    reservation_days = models.IntegerField(null=True, blank=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

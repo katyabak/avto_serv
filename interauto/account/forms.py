@@ -87,18 +87,77 @@ class ApplicationForm(forms.ModelForm):
         ('Запчасть10', 'Запчасть10'),
     ]
 
-    detail = forms.ChoiceField(
-        choices=DETAIL_CHOICES,
-        label="Запчасть"
+    DELIVERY_CHOICES = [
+        ('delivery', 'Доставка'),
+        ('pickup', 'Самовывоз'),
+    ]
+
+    PAYMENT_CHOICES = [
+        ('card', 'Карта'),
+        ('cash', 'Наличные'),
+    ]
+
+    RESERVATION_CHOICES = [
+        ('yes', 'Да'),
+        ('no', 'Нет'),
+    ]
+
+    RESERVATION_DAYS_CHOICES = [
+        (1, '1 день'),
+        (2, '2 дня'),
+        (3, '3 дня'),
+    ]
+
+    detail = forms.ChoiceField(choices=DETAIL_CHOICES, label="Запчасть")
+
+    delivery = forms.ChoiceField(
+        choices=DELIVERY_CHOICES,
+        label="Доставка",
+        required=True
+    )
+
+    payment_method = forms.ChoiceField(
+        choices=PAYMENT_CHOICES,
+        label="Способ оплаты",
+        required=True
+    )
+
+    reservation = forms.ChoiceField(
+        choices=RESERVATION_CHOICES,
+        label="Резервирование",
+        required=True
+    )
+
+    reservation_days = forms.ChoiceField(
+        choices=RESERVATION_DAYS_CHOICES,
+        label="Кол-во дней резервирования",
+        required=False
     )
 
     comment = forms.CharField(
         label="Комментарий",
         max_length=100,
         required=False,
-        widget=forms.Textarea(attrs={'rows':3})
+        widget=forms.Textarea(attrs={'rows': 3})
     )
 
     class Meta:
         model = ClientApplication
-        fields = ['detail', 'comment']
+        fields = [
+            'detail',
+            'delivery',
+            'payment_method',
+            'reservation',
+            'reservation_days',
+            'comment'
+        ]
+
+    def clean(self):
+        cleaned_data = super().clean()
+        reservation = cleaned_data.get('reservation')
+        days = cleaned_data.get('reservation_days')
+
+        if reservation == 'yes' and not days:
+            raise forms.ValidationError("Укажите количество дней резервирования")
+
+        return cleaned_data

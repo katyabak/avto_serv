@@ -18,6 +18,25 @@
             {{ form.detail.label_tag }}
             {{ form.detail|add_class:"form-control" }}
         </div>
+        <div class="mb-3">
+            {{ form.delivery.label_tag }}
+            {{ form.delivery|add_class:"form-control" }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.payment_method.label_tag }}
+            {{ form.payment_method|add_class:"form-control" }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.reservation.label_tag }}
+            {{ form.reservation|add_class:"form-control" }}
+        </div>
+
+        <div class="mb-3" id="reservation-days-block" style="display:none;">
+            {{ form.reservation_days.label_tag }}
+            {{ form.reservation_days|add_class:"form-control" }}
+        </div>
 
         <div class="mb-3">
             {{ form.comment.label_tag }}
@@ -32,4 +51,21 @@
     </form>
 
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const reservationField = document.getElementById("id_reservation");
+    const daysBlock = document.getElementById("reservation-days-block");
+
+    function toggleDays() {
+        if (reservationField.value === "yes") {
+            daysBlock.style.display = "block";
+        } else {
+            daysBlock.style.display = "none";
+        }
+    }
+
+    reservationField.addEventListener("change", toggleDays);
+    toggleDays();
+});
+</script>
 {% endblock %}
