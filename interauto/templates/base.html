@@ -24,6 +24,9 @@
             background: #ffffff;
         }
 
+
+
+
     </style>
 </head>
 <body>
@@ -70,7 +73,43 @@
 <main class="py-4">
     {% block content %}{% endblock %}
 </main>
+<!-- Footer -->
+<footer class="bg-dark text-white py-4 mt-5">
+    <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between">
+        <!-- Левое лого -->
+        <div class="mb-3 mb-md-0 d-flex align-items-center">
+            <img src="{% static 'images/logo.png' %}" alt="logo" style="width:160px; height:auto;">
+        </div>
+        <!--        <a>+7 (3812) 63‒77‒73</a>-->
 
+        <!-- Центр: текст и email -->
+        <div class="text-center text-md-start mb-3 mb-md-0">
+            <div>ООО «ИнтерАвто» 2026.
+                Все права защищены.
+            </div>
+            <div>Email: <a href="mailto:interavto-servis@yandex.ru" class="text-white">interavto-servis@yandex.ru</a>
+            </div>
+            <div>ОГРН 1085543015447, ИНН 5507203536</div>
+        </div>
+        <!-- Право: соцсети -->
+        <div class="d-flex gap-2">
+            <a href="http://vk.com/omskdizel" target="_blank" class="text-white fs-4"><i class="fab fa-vk"></i></a>
+            <a href="https://rutube.ru/channel/31265080/" target="_blank" class="text-white fs-4"><i
+                    class="fab fa-rutube"></i></a>
+            <a href="http://www.ok.ru/group/53683347062975" target="_blank" class="text-white fs-4"><i
+                    class="fab fa-odnoklassniki"></i></a>
+            <a href="https://t.me/omskdizel1" target="_blank" class="text-white fs-4"><i
+                    class="fab fa-telegram"></i></a>
+            <a href="https://dzen.ru/id/5be2817afdea6c00aa785a9d" target="_blank" title="Yandex Zen">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEA0lEQVR4nO1aWY8NQRS+ltgSEiNiHRH8BN48SESIfYslCAkvPAkG/8AyJBIPtrE8kXgSxr48SBDbWINgBiPGSIa37lvfqcgn1dOunrk9d7q76o4hc5J66u7v1FenTtVZOpfrkf9USA6jUosI7CdwiSKvCRwuPBc5TZFXwTOgmkotJFmR6w5Csj+BtQRuENAUYZsBNBXeBfyY55rANQKrDVbuLxAYSJEqAt+KJtd21EeI/Cj5LtBMka0kB3QNCaXmUeRzJwR+j5eF70S+JPzmE7WeXT4C5CCKnEw4md+r/DBCpD7VtyI1xvJuSXjeWIo8SzkRQ+R2hMjL1N+L1NHzRrshkc9PosiHDJMw43wBB7iTEaOB+fxEOxKeN9qChLHIwQKWyJnMOCKN9P1KG594aqHcjKqIRXZbYtVl8pnUjh1vkWURvI3WeCI1WY5YOhiTC5haz3SCqRMezeFl1+jAGh7JfhHcCgI/HZD5mOjSpMg2JysHXI3BfuzI0luTxE7fHBFZH0NkhyPs5pKxWRAAulHUQnJwzEKNCLacGx2rShG56cj0VSV07C7X1v2TT8SF4ukV3CHZN9eBGEelyHMHeoTk0GIFSi1xsFKvSY7qiERBl+9XUuS9tT6lFhaDA/ssgc8Zq3ZGok34A1y3tMqeOCKXMgK+oFJLkxJoo5PsTWANRd5mJHKxGNRsi+Qg7wkcoshUkr2ykGhHqA+1nh7kICaxSj6PN3FEzgQOZFJS4CtF3hG4a0JxihwJ0lCt5ybxAWtivl9JpRZQZDtFjhG4QOBeuIDN4RxhChrlnkuPWAtFzoblGWO2liDHBu4TqKXI8SC8MHWrrAlOmrnk8+Op1GKK7KTICePUBB6Ec2opubWM46RwMpM1HqXW08zJ48jZZ4QL1mjn7NmPX1NRXJHl9AqP33WZL0egNo5IteXlVEtyeGISnjeGwC33F6JSi6xAQ1MnKd/Q98dlqHOxaCg1P87MFY6CxrudBI0mA31RtqDRiHXs82fsyHUgBPY60QFcyZVQssaRku8khxThk6Niq/LZdKzsqlR3QxF+673gAvtrtLART8bEVG6UXYvBfuJo624uSSLijJ8cEPHLVA5qSNwUotZzHK3clAjmLCeYWs9MRCKyDWocWGV5BG+TAyJHUpGIbLG6blTEfpS5LRe2FRq6QVuh3jqhM00WCzIuGj31zOcnWJFoZ5m6Lm+9AQ9JjnRCop3PHEs7kQiRdEEicLisrWrTnwhK+2nb00BTwm8+pD5iM5NpLXtuCZv8Jfd3ih8GTOVm89/6A6KfqYqbgnIQVqf/hQMELpsAsNPYqavE5AYm0TFZW1AsaP2B5kDhucipMC2uJbAreLejfKJHcv++/ALl/St9iDzHjAAAAABJRU5ErkJggg=="
+                     alt="Yandex Zen" width="24" height="24"/>
+            </a>
+        </div>
+    </div>
+</footer>
+
+<!-- FontAwesome Icons CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <!-- Bootstrap JS (опционально для dropdowns) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
