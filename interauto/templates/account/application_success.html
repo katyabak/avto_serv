@@ -2,12 +2,14 @@
 {% load form_tags %}
 
 {% block content %}
-<div class="container py-5 text-center">
+<div class="container py-5" style="max-width: 600px; text-align: center;">
 
     <h3>
         Заявка была успешно оформлена! <br><br>
         В ближайшее время с Вами свяжется наш менеджер.
     </h3>
+    <a href="/account/" class="btn w-100 mt-2 btn-secondary" style="max-width: 300px;">Вернуться в профиль</a>
 
 </div>
+
 {% endblock %}

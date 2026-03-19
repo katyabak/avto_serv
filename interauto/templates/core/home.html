@@ -10,28 +10,31 @@
 
             <!-- Левый блок -->
             <div class="col-12 col-lg-6 p-5 d-flex flex-column justify-content-center"
-                 style="background-color: #334B5B;">
+                 style="background-color: #243642;">
                 <h1 class="fw-bold display-6" style="color: #ffffff;">
                     Автокомплекс по продаже запчастей и ремонту автомобилей
                 </h1>
                 <p class="lead" style="color: #ffffff;">
                     Запчасти, ремонт, консультации и сервис в одном месте
                 </p>
+                <div class="d-flex justify-content-center" style="min-width: 350px;">
+                <a href="/account/application/" class="btn"
+                       style="min-width: 350px; background:#95444d; color:#ffffff; padding: .75rem 2.5rem; border-radius:10px;">
+                        Оформить заявку
+                    </a>
+                </div>
             </div>
 
             <!-- Правый блок: картинка с оверлеем -->
             <div class="col-12 col-lg-6 position-relative" style="min-height: 420px; background-color: #334B5B">
-                <img src="{% static 'images/dark_home.png' %}" alt="Автосервис"
+                <img src="{% static 'images/home_auto.png' %}" alt="Автосервис"
                      class="w-100 h-100 object-fit-cover" style="object-fit:cover;">
 
                 <div class="position-absolute top-50 start-50 translate-middle text-center">
-                    <p class="mb-3" style="color: #e9e7e5;">
-                        Надёжность, качество и внимание к каждому клиенту
-                    </p>
-                    <a href="/account/application/" class="btn"
-                       style="background:#95444d; color:#ffffff; padding: .75rem 2.5rem; border-radius:10px;">
-                        Оформить заявку
-                    </a>
+<!--                    <p class="mb-3" style="color: #e9e7e5;">-->
+<!--                        Надёжность, качество и внимание к каждому клиенту-->
+<!--                    </p>-->
+
                 </div>
             </div>
 
@@ -47,24 +50,24 @@
                     <!-- Картинка -->
                     <img src="{% static 'images/feature1.jpg' %}" alt="Пример 1" class="mb-3 w-100"
                          style="height:160px; object-fit:cover; border-radius:6px;">
-                    <h5 class="card-title">Пример 1</h5>
-                    <p class="card-text">Короткий текст-пример.</p>
+                    <h5 class="card-title">Гарантия качества</h5>
+                    <p class="card-text">Мы поставляем запчасти более 17 лет.</p>
                 </div>
             </div>
             <div class="col-12 col-md-4">
                 <div class="card bg-light text-dark border-0 h-100 p-3">
                     <img src="{% static 'images/feature2.jpg' %}" class="mb-3 w-100"
                          style="height:160px; object-fit:cover; border-radius:6px;">
-                    <h5 class="card-title">Работаем 24/7</h5>
-                    <p class="card-text">Короткий текст-пример.</p>
+                    <h5 class="card-title">Индивидуальный подход</h5>
+                    <p class="card-text">Профессионализм и опыт.</p>
                 </div>
             </div>
             <div class="col-12 col-md-4">
                 <div class="card bg-light text-dark border-0 h-100 p-3">
                     <img src="{% static 'images/feature3.jpg' %}" alt="Исправная техника" class="mb-3 w-100"
                          style="height:160px; object-fit:cover; border-radius:6px;">
-                    <h5 class="card-title">Исправная техника</h5>
-                    <p class="card-text">Короткий текст-пример.</p>
+                    <h5 class="card-title">Оригинальные запчасти</h5>
+                    <p class="card-text">КАМАЗ, УАЗ, ЗИЛ, DONGFENG.</p>
                 </div>
             </div>
         </div>
@@ -79,8 +82,6 @@
                  style="height:140px;object-fit:contain;">
             <img src="{% static 'images/partners/dinamika_sveta.jpg' %}" alt="partner"
                  style="height:140px;object-fit:contain;">
-            <img src="{% static 'images/partners/greenlight.png' %}" alt="partner"
-                 style="height:90px;object-fit:contain;">
             <img src="{% static 'images/partners/auto_aliyans.jpg' %}" alt="partner"
                  style="height:120px;object-fit:contain;">
             <img src="{% static 'images/partners/avtozavod.png' %}" alt="partner"
