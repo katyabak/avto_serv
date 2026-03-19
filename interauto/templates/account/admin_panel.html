@@ -86,6 +86,10 @@
                     <th>ФИО</th>
                     <th>Телефон</th>
                     <th>Запчасть</th>
+                    <th>Доставка</th>
+                    <th>Способ оплаты</th>
+                    <th>Резервирование</th>
+                    <th>Кол-во дней</th>
                     <th>Комментарий</th>
                     <th>Дата</th>
                 </tr>
@@ -101,8 +105,20 @@
                     </td>
                     <td>{{ app.client.phone_number }}</td>
                     <td>{{ app.detail }}</td>
+                    <td>
+                        {% if app.delivery == 'delivery' %}Доставка{% elif app.delivery == 'pickup' %}Самовывоз{% else %}-{% endif %}
+                    </td>
+                    <td>
+                        {% if app.payment_method == 'card' %}Карта{% elif app.payment_method == 'cash' %}Наличные{% else %}-{% endif %}
+                    </td>
+                    <td>
+                        {% if app.reservation == 'yes' %}Да{% elif app.reservation == 'no' %}Нет{% else %}-{% endif %}
+                    </td>
+                    <td>
+                        {% if app.reservation == 'yes' %}{{ app.reservation_days }}{% else %}-{% endif %}
+                    </td>
                     <td>{{ app.comment }}</td>
-                    <td>{{ app.created_at }}</td>
+                    <td>{{ app.created_at|date:"d F Y, H:i" }}</td>
                 </tr>
                 {% endfor %}
                 </tbody>
