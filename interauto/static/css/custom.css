@@ -1,0 +1,146 @@
+/* Стили для карточек преимуществ */
+.benefits-card {
+    transition: transform 0.3s ease;
+}
+
+.benefits-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+}
+
+/* Цвет акцента */
+.text-accent {
+    color: #B52837;
+}
+
+.bg-accent {
+    background-color: #B52837;
+}
+
+/* Стили для иконок */
+.benefits-icon {
+    font-size: 3rem;
+    color: #B52837;
+}
+
+/* Стили для карточек "Почему выбирают нас" */
+.feature-card {
+    transition: transform 0.3s ease;
+    border-radius: 20px;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+}
+
+.feature-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #95444d 0%, #b85c66 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    color: white;
+}
+
+/* Стили для кнопок */
+.btn-primary-custom {
+    background: #95444d;
+    color: #ffffff;
+    padding: .75rem 2rem;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-primary-custom:hover {
+    background: #b85c66;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(149, 68, 77, 0.3);
+}
+
+/* Общие стили для секций */
+.section-title {
+    color: #243642;
+    font-weight: bold;
+    margin-bottom: 2rem;
+}
+
+/* Анимации */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Дополнительные стили для карточек "Почему выбирают нас" */
+.feature-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
+}
+
+.feature-card:hover i {
+    transform: scale(1.1);
+    color: #b85c66 !important;
+}
+
+.feature-card:hover h5 {
+    color: #95444d !important;
+}
+
+/* Стили для стеклянных карточек */
+.glass-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(149, 68, 77, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.glass-card:hover {
+    background: rgba(255, 255, 255, 1);
+    border-color: #95444d;
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+
+.glass-card img {
+    transition: transform 0.3s ease;
+}
+
+.glass-card:hover img {
+    transform: scale(1.05);
+}
+
+.glass-card p {
+    color: #243642;
+    transition: color 0.3s ease;
+}
+
+.glass-card:hover p {
+    color: #95444d;
+}
