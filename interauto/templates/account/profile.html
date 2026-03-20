@@ -2,44 +2,95 @@
 {% load form_tags %}
 
 {% block content %}
-<div class="container py-5" style="max-width: 500px;">
-    <h2 class="fw-bold mb-4 text-center">Профиль</h2>
+<div class="container py-5">
+    <div class="row">
 
-    {% if edit_mode %}
-    <form method="post">
-        {% csrf_token %}
-        {% for field in form %}
-        <div class="mb-3">
-            {{ field.label_tag }}
-            {{ field|add_class:"form-control" }}
-            {% if field.errors %}
-            <div class="text-danger">{{ field.errors }}</div>
+        <!-- ЛЕВАЯ ЧАСТЬ (ПРОФИЛЬ) -->
+        <div class="col-md-4">
+            <h4 class="fw-bold mb-3">Профиль</h4>
+
+            {% if edit_mode %}
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="mb-3">
+                    {{ field.label_tag }}
+                    {{ field|add_class:"form-control" }}
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn w-100" style="background-color: #334B5B; color: #ffffff;">
+                    Сохранить
+                </button>
+                <a href="/account/" class="btn w-100 mt-2 btn-secondary">Отмена</a>
+            </form>
+            {% else %}
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Имя:</strong> {{ user.first_name }}</p>
+            <p><strong>Фамилия:</strong> {{ user.last_name }}</p>
+            <p><strong>Отчество:</strong> {{ user.middle_name }}</p>
+            <p><strong>Телефон:</strong> {{ user.phone_number }}</p>
+
+            <a href="/account/?edit=1" class="btn w-100 mb-2"
+               style="background-color: #334B5B; color: #ffffff;">
+                Редактировать данные профиля
+            </a>
+
+            {% if user.is_admin %}
+            <a href="/account/list/" class="btn w-100 mb-2"
+               style="background-color: #334B5B; color: #ffffff;">
+                Админ-панель
+            </a>
+            {% else %}
+            <a href="/account/application/" class="btn w-100 mb-2"
+               style="background-color: #334B5B; color: #ffffff;">
+                Оформить заявку
+            </a>
+            <a href="/account/appointment/" class="btn w-100 mb-2"
+               style="background-color: #334B5B; color: #ffffff;">
+                Записаться на СТО
+            </a>
+            {% endif %}
+
+            <a href="/account/logout/" class="btn w-100 btn-danger">Выйти</a>
             {% endif %}
         </div>
-        {% endfor %}
-        <button type="submit" class="btn w-100" style="background-color: #334B5B; color: #ffffff;">Сохранить изменения
-        </button>
-        <a href="/account/" class="btn w-100 mt-2 btn-secondary">Отменить изменения</a>
-    </form>
-    {% else %}
-    <p><strong>Email:</strong> {{ user.email }}</p>
-    <p><strong>Имя:</strong> {{ user.first_name }}</p>
-    <p><strong>Фамилия:</strong> {{ user.last_name }}</p>
-    <p><strong>Отчество:</strong> {{ user.middle_name }}</p>
-    <p><strong>Телефон:</strong> {{ user.phone_number }}</p>
 
-    <a href="/account/?edit=1" class="btn w-100" style="background-color: #334B5B; color: #ffffff;">Редактировать
-        данные</a>
-    {% if user.is_admin %}
-    <a href="/account/list/" class="btn w-100 mt-2" style="background-color: #334B5B; color: #ffffff;">
-        Админ-панель
-    </a>
-    {% else %}
-    <a href="/account/application/" class="btn w-100 mt-2" style="background-color: #334B5B; color: #ffffff;">
-        Оформить заявку
-    </a>
-    {% endif %}
-    <a href="/account/logout/" class="btn w-100 mt-2 btn-danger">Выйти из аккаунта</a>
-    {% endif %}
+        <!-- ПРАВАЯ ЧАСТЬ (ЗАЯВКИ) -->
+        <div class="col-md-8">
+            <h4 class="fw-bold mb-3">Мои заявки</h4>
+
+            {% if applications %}
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Запчасть</th>
+                    <th>Доставка</th>
+                    <th>Комментарий</th>
+                    <th>Дата</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for app in applications %}
+                <tr>
+                    <td>{{ app.id }}</td>
+                    <td>{{ app.detail }}</td>
+                    <td>
+                        {% if app.delivery == 'delivery' %}Доставка
+                        {% elif app.delivery == 'pickup' %}Самовывоз
+                        {% else %}-{% endif %}
+                    </td>
+                    <td>{{ app.comment }}</td>
+                    <td>{{ app.created_at|date:"d.m.Y H:i" }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>У вас пока нет заявок</p>
+            {% endif %}
+        </div>
+
+    </div>
 </div>
 {% endblock %}

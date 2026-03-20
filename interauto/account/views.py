@@ -11,6 +11,8 @@ from django.http import Http404
 def profile(request):
     user = request.user
 
+    applications = user.applications.all()
+
     if request.method == 'POST':
         form = ClientUpdateForm(request.POST, instance=user)
         if form.is_valid():
@@ -24,7 +26,8 @@ def profile(request):
     return render(request, 'account/profile.html', {
         'user': user,
         'form': form,
-        'edit_mode': edit_mode
+        'edit_mode': edit_mode,
+        'applications': applications
     })
 
 
@@ -77,11 +80,6 @@ def admin_panel(request):
         'clients': clients,
         'applications': applications
     })
-
-
-@login_required(login_url='/account/login/')
-def application(request):
-    return render(request, 'account/application.html')
 
 
 @login_required(login_url='/account/login/')
