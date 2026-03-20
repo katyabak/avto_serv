@@ -11,16 +11,20 @@
             <!-- Левый блок -->
             <div class="col-12 col-lg-6 p-5 d-flex flex-column justify-content-center"
                  style="background-color: #243642;">
-                <h1 class="fw-bold display-6" style="color: #ffffff;">
+                <h1 class="fw-bold display-6" style="color: #ffffff;margin-bottom: 10;">
                     Автокомплекс по продаже запчастей и ремонту автомобилей
                 </h1>
-                <p class="lead" style="color: #ffffff;">
+                <p class="lead" style="color: #ffffff; margin-bottom: 25;">
                     Запчасти, ремонт, консультации и сервис в одном месте
                 </p>
-                <div class="d-flex justify-content-center" style="min-width: 350px;">
-                <a href="/account/application/" class="btn"
-                       style="min-width: 350px; background:#95444d; color:#ffffff; padding: .75rem 2.5rem; border-radius:10px;">
+                <div class="d-flex flex-column flex-sm-row justify-content-left gap-4">
+                    <a href="/account/application/" class="btn"
+                       style="background:#95444d; color:#ffffff; padding: .75rem 2rem; border-radius:10px; font-size: 1.1rem; max-width: 350px;">
                         Оформить заявку
+                    </a>
+                    <a href="/account/appointment/" class="btn"
+                       style="background:#95444d; color:#ffffff; padding: .75rem 2rem; border-radius:10px; font-size: 1.1rem; max-width: 350px;">
+                        Записаться на СТО
                     </a>
                 </div>
             </div>
@@ -30,12 +34,7 @@
                 <img src="{% static 'images/home_auto.png' %}" alt="Автосервис"
                      class="w-100 h-100 object-fit-cover" style="object-fit:cover;">
 
-                <div class="position-absolute top-50 start-50 translate-middle text-center">
-<!--                    <p class="mb-3" style="color: #e9e7e5;">-->
-<!--                        Надёжность, качество и внимание к каждому клиенту-->
-<!--                    </p>-->
 
-                </div>
             </div>
 
         </div>
