@@ -11,6 +11,8 @@ urlpatterns = [
     path('list/', views.admin_panel, name='admin_panel'),
     path('application/', views.application, name='account_application'),
     path('application/success/', views.application_success, name='application_success'),
+    path('application/<int:application_id>/update-status/', views.update_application_status,
+         name='update_application_status'),
 
     # Сброс пароля — ввод email
     path('password_reset/', auth_views.PasswordResetView.as_view(

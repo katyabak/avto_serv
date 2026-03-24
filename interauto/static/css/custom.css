@@ -144,3 +144,110 @@
 .glass-card:hover p {
     color: #95444d;
 }
+
+/* Админ-панель */
+.active-tab {
+    background-color: #334B5B;
+    color: white;
+    border: none;
+}
+
+.active-tab:hover {
+    background-color: #334B5B;
+    color: white;
+}
+
+.inactive-tab {
+    background-color: white;
+    color: #334B5B;
+    border: 1px solid #334B5B;
+}
+
+.inactive-tab:hover {
+    background-color: white;
+    color: #334B5B;
+    border: 1px solid #334B5B;
+}
+
+/* Стили для статусов в админ-панеле */
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.status-badge:hover {
+    opacity: 0.8;
+}
+
+.status-waiting {
+    background-color: #ffc107;
+    color: #856404;
+}
+
+.status-accepted {
+    background-color: #28a745;
+    color: white;
+}
+
+.status-canceled {
+    background-color: #dc3545;
+    color: white;
+}
+
+.status-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.status-menu {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    z-index: 1000;
+    min-width: 150px;
+}
+
+.status-menu-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.status-menu-item:hover {
+    background-color: #f5f5f5;
+}
+
+.status-menu-item.waiting {
+    color: #856404;
+}
+
+.status-menu-item.accepted {
+    color: #28a745;
+}
+
+.status-menu-item.canceled {
+    color: #dc3545;
+}
+
+.loading-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 8px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

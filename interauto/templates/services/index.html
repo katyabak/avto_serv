@@ -1,7 +1,289 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block content %}
-<div class="container text-center py-5">
-  <h2 class="fw-bold">Страница Услуг (каталог запчастей)</h2>
-  <p>Здесь будет список услуг и запчастей.</p>
+<div class="container px-3 py-5">
+
+    <!-- Hero секция -->
+    <div class="text-center mb-5 pb-4">
+        <h1 class="fw-bold display-5 mb-3" style="color: #243642;">Наши услуги</h1>
+        <p class="lead text-muted mx-auto" style="max-width: 700px;">
+            Профессиональный ремонт, диагностика и техническое обслуживание автомобилей любой сложности
+        </p>
+        <div class="mx-auto mt-3" style="width: 80px; height: 3px; background: #95444d;"></div>
+    </div>
+
+    <!-- Услуги в карточках -->
+    <div class="row g-4 mb-5">
+        <!-- Услуга 1: Техническое обслуживание -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="service-card h-100 p-4">
+                <div class="service-icon mb-4">
+                    <i class="fas fa-oil-can"></i>
+                </div>
+                <h3 class="fw-bold mb-3" style="color: #243642;">Техническое обслуживание</h3>
+                <p class="text-muted mb-3">
+                    Регулярное ТО — залог долгой и безопасной эксплуатации вашего автомобиля.
+                    Проводим полный комплекс работ по обслуживанию всех систем.
+                </p>
+                <ul class="service-list mb-4">
+                    <li><i class="fas fa-check-circle"></i> Замена масла и фильтров</li>
+                    <li><i class="fas fa-check-circle"></i> Проверка и регулировка узлов</li>
+                    <li><i class="fas fa-check-circle"></i> Диагностика ходовой части</li>
+                    <li><i class="fas fa-check-circle"></i> Обслуживание тормозной системы</li>
+                </ul>
+                <a href="/account/appointment/" class="btn btn-service">Записаться на СТО →</a>
+            </div>
+        </div>
+
+        <!-- Услуга 2: Ремонт автомобилей -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="service-card h-100 p-4">
+                <div class="service-icon mb-4">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <h3 class="fw-bold mb-3" style="color: #243642;">Ремонт автомобилей</h3>
+                <p class="text-muted mb-3">
+                    Качественный ремонт любой сложности с использованием оригинальных запчастей.
+                    Работаем с грузовыми и легковыми автомобилями.
+                </p>
+                <ul class="service-list mb-4">
+                    <li><i class="fas fa-check-circle"></i> Ремонт двигателя и КПП</li>
+                    <li><i class="fas fa-check-circle"></i> Ремонт ходовой части</li>
+                    <li><i class="fas fa-check-circle"></i> Электрооборудование</li>
+                    <li><i class="fas fa-check-circle"></i> Кузовной ремонт</li>
+                </ul>
+                <a href="/account/appointment/" class="btn btn-service">Записаться на ремонт →</a>
+            </div>
+        </div>
+
+        <!-- Услуга 3: Диагностика -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="service-card h-100 p-4">
+                <div class="service-icon mb-4">
+                    <i class="fas fa-stethoscope"></i>
+                </div>
+                <h3 class="fw-bold mb-3" style="color: #243642;">Компьютерная диагностика</h3>
+                <p class="text-muted mb-3">
+                    Современное оборудование позволяет быстро и точно определить любую неисправность
+                    на ранней стадии.
+                </p>
+                <ul class="service-list mb-4">
+                    <li><i class="fas fa-check-circle"></i> Диагностика двигателя</li>
+                    <li><i class="fas fa-check-circle"></i> Проверка электронных систем</li>
+                    <li><i class="fas fa-check-circle"></i> Диагностика ходовой части</li>
+                    <li><i class="fas fa-check-circle"></i> Расшифровка ошибок ЭБУ</li>
+                </ul>
+                <a href="/account/appointment/" class="btn btn-service">Записаться на диагностику →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Дополнительные услуги -->
+    <div class="mt-5 pt-4">
+        <h2 class="fw-bold text-center mb-4" style="color: #243642;">Дополнительные услуги</h2>
+        <div class="row g-4">
+            <div class="col-12 col-md-6">
+                <div class="extra-service d-flex align-items-center p-4">
+                    <div class="extra-icon me-4">
+                        <i class="fas fa-car-battery"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-2">Замена аккумуляторов и электрооборудования</h5>
+                        <p class="text-muted mb-0">Диагностика и замена генератора, стартера, проводки</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="extra-service d-flex align-items-center p-4">
+                    <div class="extra-icon me-4">
+                        <i class="fas fa-snowplow"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-2">Шиномонтаж и балансировка</h5>
+                        <p class="text-muted mb-0">Качественный шиномонтаж на современном оборудовании</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="extra-service d-flex align-items-center p-4">
+                    <div class="extra-icon me-4">
+                        <i class="fas fa-wind"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-2">Заправка и обслуживание кондиционеров</h5>
+                        <p class="text-muted mb-0">Диагностика, заправка, чистка системы кондиционирования</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="extra-service d-flex align-items-center p-4">
+                    <div class="extra-icon me-4">
+                        <i class="fas fa-braille"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-2">Сход-развал</h5>
+                        <p class="text-muted mb-0">Компьютерная регулировка углов установки колес</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Призыв к действию -->
+    <div class="cta-section text-center p-5 mt-4" style="background: #243642; border-radius: 24px;">
+        <h2 class="fw-bold text-white mb-3">Нужна консультация?</h2>
+        <p class="text-white-50 mb-4">Наши специалисты ответят на все ваши вопросы</p>
+        <a href="/account/appointment/" class="btn btn-cta">Записаться на СТО →</a>
+    </div>
+
 </div>
+
+</div>
+
+<style>
+/* Стили для карточек услуг */
+.service-card {
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(149,68,77,0.1);
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    border-color: #95444d;
+}
+
+.service-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #95444d 0%, #b85c66 100%);
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.service-icon i {
+    font-size: 2rem;
+    color: white;
+}
+
+.service-card:hover .service-icon {
+    transform: rotate(5deg) scale(1.05);
+}
+
+.service-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.service-list li {
+    margin-bottom: 8px;
+    color: #6c757d;
+}
+
+.service-list li i {
+    color: #95444d;
+    margin-right: 8px;
+    font-size: 0.9rem;
+}
+
+.btn-service {
+    background: transparent;
+    color: #95444d;
+    border: 2px solid #95444d;
+    border-radius: 30px;
+    padding: 8px 24px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.btn-service:hover {
+    background: #95444d;
+    color: white;
+    transform: translateX(5px);
+}
+
+/* Дополнительные услуги */
+.extra-service {
+    background: #f8f9fa;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.extra-service:hover {
+    background: white;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    transform: translateX(5px);
+}
+
+.extra-icon {
+    width: 50px;
+    height: 50px;
+    background: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+}
+
+.extra-icon i {
+    font-size: 1.5rem;
+    color: #95444d;
+}
+
+/* Баннер преимуществ */
+.benefits-banner {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 24px;
+}
+
+@media (max-width: 768px) {
+    .service-card {
+        margin-bottom: 20px;
+    }
+
+    .service-icon {
+        width: 60px;
+        height: 60px;
+    }
+
+    .service-icon i {
+        font-size: 1.5rem;
+    }
+}
+
+.btn-cta {
+    background: #95444d;
+    color: white;
+    padding: 12px 32px;
+    border-radius: 40px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-cta:hover {
+    background: #b85c66;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(149,68,77,0.3);
+}
+
+@media (max-width: 768px) {
+    .service-number {
+        font-size: 3rem;
+    }
+
+    .service-content h3 {
+        font-size: 1.3rem;
+    }
+}
+</style>
 {% endblock %}

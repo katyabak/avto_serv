@@ -3,11 +3,12 @@
 
 {% block content %}
 <div class="container py-5">
-    <div class="row">
-
+    <div class="row justify-content-center">
         <!-- ЛЕВАЯ ЧАСТЬ (ПРОФИЛЬ) -->
-        <div class="col-md-4">
-            <h4 class="fw-bold mb-3">Профиль</h4>
+        <div class="{% if not user.is_staff %}col-md-4{% else %}col-md-6{% endif %}">
+            <div class="text-center mb-4">
+                <h4 class="fw-bold">Профиль</h4>
+            </div>
 
             {% if edit_mode %}
             <form method="post">
@@ -35,7 +36,7 @@
                 Редактировать данные профиля
             </a>
 
-            {% if user.is_admin %}
+            {% if user.is_staff %}
             <a href="/account/list/" class="btn w-100 mb-2"
                style="background-color: #334B5B; color: #ffffff;">
                 Админ-панель
@@ -55,41 +56,57 @@
             {% endif %}
         </div>
 
-        <!-- ПРАВАЯ ЧАСТЬ (ЗАЯВКИ) -->
+        <!-- ПРАВАЯ ЧАСТЬ (ЗАЯВКИ) - ТОЛЬКО ДЛЯ КЛИЕНТОВ -->
+        {% if not user.is_staff %}
         <div class="col-md-8">
             <h4 class="fw-bold mb-3">Мои заявки</h4>
 
             {% if applications %}
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Запчасть</th>
-                    <th>Доставка</th>
-                    <th>Комментарий</th>
-                    <th>Дата</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for app in applications %}
-                <tr>
-                    <td>{{ app.id }}</td>
-                    <td>{{ app.detail }}</td>
-                    <td>
-                        {% if app.delivery == 'delivery' %}Доставка
-                        {% elif app.delivery == 'pickup' %}Самовывоз
-                        {% else %}-{% endif %}
-                    </td>
-                    <td>{{ app.comment }}</td>
-                    <td>{{ app.created_at|date:"d.m.Y H:i" }}</td>
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Запчасть</th>
+                            <th>Доставка</th>
+                            <th>Комментарий</th>
+                            <th>Дата</th>
+                            <th>Статус</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for app in applications %}
+                    <tr>
+                        <td>{{ app.id }}</td>
+                        <td>{{ app.detail }}</td>
+                        <td>
+                            {% if app.delivery == 'delivery' %}Доставка
+                            {% elif app.delivery == 'pickup' %}Самовывоз
+                            {% else %}-{% endif %}
+                        </td>
+                        <td>{{ app.comment }}</td>
+                        <td>{{ app.created_at|date:"d.m.Y H:i" }}</td>
+                        <td>
+                            {% if app.status == 'waiting' %}
+                            <span class="badge bg-warning text-dark">На рассмотрении</span>
+                            {% elif app.status == 'accepted' %}
+                            <span class="badge bg-success">Принят</span>
+                            {% elif app.status == 'canceled' %}
+                            <span class="badge bg-danger">Отменено</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
             {% else %}
-            <p>У вас пока нет заявок</p>
+            <div class="alert alert-info">
+                У вас пока нет заявок.
+            </div>
             {% endif %}
         </div>
+        {% endif %}
 
     </div>
 </div>

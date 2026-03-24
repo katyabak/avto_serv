@@ -9,7 +9,11 @@ class ClientApplication(models.Model):
         on_delete=models.CASCADE,
         related_name='applications'
     )
-
+    STATUS_CHOICES = [
+        ('waiting', 'На рассмотрении'),
+        ('accepted', 'Принят'),
+        ('canceled', 'Отменено'),
+    ]
     detail = models.CharField(max_length=100)
     comment = models.CharField(max_length=100, blank=True)
 
@@ -19,6 +23,11 @@ class ClientApplication(models.Model):
     reservation_days = models.IntegerField(null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='waiting'
+    )
 
     class Meta:
         db_table = 'account_client_applications'

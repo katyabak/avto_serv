@@ -1,10 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from .forms import RegisterForm, LoginForm, ClientUpdateForm
 from django.contrib.auth.decorators import login_required
 from .forms import ApplicationForm
 from .models import Client, ClientApplication
-from django.http import Http404
+from django.http import Http404, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+import json
 
 
 @login_required(login_url='/account/login/')
@@ -73,7 +76,7 @@ def admin_panel(request):
     if tab == 'clients':
         clients = Client.objects.all()
     elif tab == 'applications':
-        applications = ClientApplication.objects.select_related('client').all()
+        applications = ClientApplication.objects.select_related('client').all().order_by('-created_at')
 
     return render(request, 'account/admin_panel.html', {
         'tab': tab,
@@ -108,6 +111,41 @@ def application(request):
 @login_required(login_url='/account/login/')
 def application_success(request):
     return render(request, 'account/application_success.html')
+
+
+@login_required(login_url='/account/login/')
+@require_POST
+def update_application_status(request, application_id):
+    """Обновление статуса заявки"""
+    if not request.user.is_staff:
+        return JsonResponse({'error': 'Доступ запрещен'}, status=403)
+
+    try:
+        data = json.loads(request.body)
+        new_status = data.get('status')
+
+        # Проверяем, что статус допустимый
+        valid_statuses = ['waiting', 'accepted', 'canceled']
+        if new_status not in valid_statuses:
+            return JsonResponse({'error': 'Недопустимый статус'}, status=400)
+
+        application = get_object_or_404(ClientApplication, id=application_id)
+        application.status = new_status
+        application.save()
+
+        # Возвращаем обновленную информацию
+        status_display = dict(application.STATUS_CHOICES).get(new_status, new_status)
+
+        return JsonResponse({
+            'success': True,
+            'status': application.status,
+            'status_display': status_display
+        })
+
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Неверный формат данных'}, status=400)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 
 @login_required(login_url='/account/login/')
