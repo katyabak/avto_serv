@@ -74,65 +74,23 @@ class CustomSetPasswordForm(SetPasswordForm):
 
 
 class ApplicationForm(forms.ModelForm):
-    DETAIL_CHOICES = [
-        ('Кронштейн КАМАЗ буксировочной вилки левый /АВТОМАГНАТ/',
-         'Кронштейн КАМАЗ буксировочной вилки левый /АВТОМАГНАТ/'),
-        ('Гайка КАМАЗ сферическая (шток ПГУ)', 'Гайка КАМАЗ сферическая (шток ПГУ)'),
-        ('Пружина КАМАЗ ПГУ оттяжная', 'Пружина КАМАЗ ПГУ оттяжная'),
-        ('Шайба КАМАЗ регул гайки вилки рычага корзины сц', 'Шайба КАМАЗ регул гайки вилки рычага корзины сц'),
-        ('Наконечник КАМАЗ реакт тяги КПП прав (53228) /АВТОМАГНАТ/',
-         'Наконечник КАМАЗ реакт тяги КПП прав (53228) /АВТОМАГНАТ/'),
-        ('Ручка КАМАЗ кулисы КПП 15 /АВТОМАГНАТ/', 'Ручка КАМАЗ кулисы КПП 15 /АВТОМАГНАТ/'),
-        ('Хвостовик КАМАЗ прив КПП в сб (Ростар) корот.', 'Хвостовик КАМАЗ прив КПП в сб (Ростар) корот.'),
-        ('Чехол КАМАЗ рычага наконечника опоры КПП', 'Чехол КАМАЗ рычага наконечника опоры КПП'),
-        ('Кран КАМАЗ включ МОД', 'Кран КАМАЗ включ МОД'),
-        ('Муфта КАМАЗ блокировки МОД /АВТОМАГНАТ/', 'Муфта КАМАЗ блокировки МОД /АВТОМАГНАТ/'),
-    ]
+    detail = forms.CharField(required=True)
 
-    DELIVERY_CHOICES = [
-        ('delivery', 'Доставка'),
-        ('pickup', 'Самовывоз'),
-    ]
-
-    PAYMENT_CHOICES = [
-        ('card', 'Карта'),
-        ('cash', 'Наличные'),
-    ]
-
-    RESERVATION_CHOICES = [
-        ('yes', 'Да'),
-        ('no', 'Нет'),
-    ]
-
-    RESERVATION_DAYS_CHOICES = [
-        (1, '1 день'),
-        (2, '2 дня'),
-        (3, '3 дня'),
-    ]
-
-    detail = forms.ChoiceField(choices=DETAIL_CHOICES, label="Запчасть")
-
-    delivery = forms.ChoiceField(
-        choices=DELIVERY_CHOICES,
-        label="Доставка",
+    delivery = forms.CharField(
         required=True
     )
 
-    payment_method = forms.ChoiceField(
-        choices=PAYMENT_CHOICES,
-        label="Способ оплаты",
+    payment_method = forms.CharField(
+
         required=True
     )
 
-    reservation = forms.ChoiceField(
-        choices=RESERVATION_CHOICES,
-        label="Резервирование",
+    reservation = forms.CharField(
         required=True
     )
 
-    reservation_days = forms.ChoiceField(
-        choices=RESERVATION_DAYS_CHOICES,
-        label="Кол-во дней резервирования",
+    reservation_days = forms.CharField(
+
         required=False
     )
 
@@ -159,9 +117,10 @@ class ApplicationForm(forms.ModelForm):
         reservation = cleaned_data.get('reservation')
         days = cleaned_data.get('reservation_days')
 
-        if reservation == 'yes' and not days:
+        if reservation == 'Да' and not days:
             raise forms.ValidationError("Укажите количество дней резервирования")
-
+        if reservation == 'Нет':
+            cleaned_data['reservation_days'] = 0
         return cleaned_data
 
 

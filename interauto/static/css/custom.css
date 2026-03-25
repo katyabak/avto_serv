@@ -251,3 +251,32 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+/* Элементы дропдауна */
+.custom-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    margin-top: 5px;
+}
+.custom-item {
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.custom-item:hover {
+    background: rgba(149,68,77,0.1);
+    color: #95444d;
+}
+
+.custom-item.active {
+    background: #95444d;
+    color: white;
+}

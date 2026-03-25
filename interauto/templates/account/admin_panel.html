@@ -79,39 +79,40 @@
                     </thead>
                     <tbody>
                     {% for app in applications %}
-                        <tr>
-                            <td>{{ app.id }}</td>
-                            <td>
-                                {{ app.client.last_name }}
-                                {{ app.client.first_name }}
-                                {{ app.client.middle_name }}
-                            </td>
-                            <td>{{ app.client.phone_number }}</td>
-                            <td>{{ app.detail }}</td>
-                            <td>
-                                {% if app.delivery == 'delivery' %}Доставка{% elif app.delivery == 'pickup' %}Самовывоз{% else %}-{% endif %}
-                            </td>
-                            <td>
-                                {% if app.payment_method == 'card' %}Карта{% elif app.payment_method == 'cash' %}Наличные{% else %}-{% endif %}
-                            </td>
-                            <td>
-                                {% if app.reservation == 'yes' %}Да{% elif app.reservation == 'no' %}Нет{% else %}-{% endif %}
-                            </td>
-                            <td>
-                                {% if app.reservation == 'yes' %}{{ app.reservation_days }}{% else %}-{% endif %}
-                            </td>
-                            <td>{{ app.comment }}</td>
-                            <td>{{ app.created_at|date:"d.m.Y H:i" }}</td>
-                            <td class="status-cell" data-application-id="{{ app.id }}">
-                                <div class="status-badge status-{{ app.status }}"
-                                     onclick="showStatusMenu(event, {{ app.id }}, '{{ app.status }}')">
-                                    {% if app.status == 'waiting' %}На рассмотрении
-                                    {% elif app.status == 'accepted' %}Принят
-                                    {% elif app.status == 'canceled' %}Отменено
-                                    {% else %}{{ app.status }}{% endif %}
-                                </div>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>{{ app.id }}</td>
+                        <td>
+                            {{ app.client.last_name }}
+                            {{ app.client.first_name }}
+                            {{ app.client.middle_name }}
+                        </td>
+                        <td>{{ app.client.phone_number }}</td>
+                        reservation
+                        <td>{{ app.detail }}</td>
+                        <td>
+                            {{ app.delivery }}
+                        </td>
+                        <td>
+                            {{ app.payment_method }}
+                        </td>
+                        <td>
+                            {{ app.reservation }}
+                        </td>
+                        <td>
+                            {{ app.reservation_days }}
+                        </td>
+                        <td>{{ app.comment }}</td>
+                        <td>{{ app.created_at|date:"d.m.Y H:i" }}</td>
+                        <td class="status-cell" data-application-id="{{ app.id }}">
+                            <div class="status-badge status-{{ app.status }}"
+                                 onclick="showStatusMenu(event, {{ app.id }}, '{{ app.status }}')">
+                                {% if app.status == 'waiting' %}На рассмотрении
+                                {% elif app.status == 'accepted' %}Принят
+                                {% elif app.status == 'canceled' %}Отменено
+                                {% else %}{{ app.status }}{% endif %}
+                            </div>
+                        </td>
+                    </tr>
                     {% endfor %}
                     </tbody>
                 </table>
@@ -473,6 +474,7 @@ function updateAppointmentStatus(appointmentId, newStatus) {
         activeMenu = null;
     }
 }
+
 
 </script>
 {% endblock %}

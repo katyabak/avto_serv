@@ -1,8 +1,14 @@
 {% extends "base.html" %}
 {% load form_tags %}
+{% load static %}
 
 {% block content %}
 <div class="container px-3 py-5">
+    {% if form.errors %}
+    <div class="alert alert-warning rounded-3 mb-4">
+        <i class="fas fa-exclamation-circle me-2"></i> {{ form.errors }}
+    </div>
+    {% endif %}
     <div class="row justify-content-center">
         <div class="col-12 col-lg-10">
             <!-- Заголовок с иконкой -->
@@ -45,32 +51,72 @@
                         </div>
 
                         <div class="row g-4">
-                            <!-- Запчасть (Detail) - на всю ширину -->
+                            <!-- Запчасть -->
                             <div class="col-12">
-                                <label class="form-label fw-semibold">{{ form.detail.label }}</label>
-                                {{ form.detail|add_class:"form-control rounded-3 py-2" }}
+                                <div class="position-relative">
+                                    <input type="text"
+                                           id="detail-input"
+                                           name="detail"
+                                           class="form-control rounded-3 py-2"
+                                           placeholder="Выберите запчасть..."
+                                           readonly
+                                           required>
+                                    <div id="detail-dropdown" class="custom-dropdown"></div>
+                                </div>
                             </div>
 
                             <!-- Доставка и Способ оплаты в одной строке -->
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">{{ form.delivery.label }}</label>
-                                {{ form.delivery|add_class:"form-select rounded-3 py-2" }}
+                                <div class="position-relative">
+                                    <input type="text"
+                                           id="delivery-input"
+                                           name="delivery"
+                                           class="form-control rounded-3 py-2"
+                                           placeholder="Выберите способ доставки..."
+                                           readonly
+                                           required>
+                                    <div id="delivery-dropdown" class="custom-dropdown"></div>
+                                </div>
                             </div>
-
+                            <!-- Способ оплаты -->
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">{{ form.payment_method.label }}</label>
-                                {{ form.payment_method|add_class:"form-select rounded-3 py-2" }}
+                                <div class="position-relative">
+                                    <input type="text"
+                                           id="payment-method-input"
+                                           name="payment_method"
+                                           class="form-control rounded-3 py-2"
+                                           placeholder="Выберите способ оплаты..."
+                                           readonly
+                                           required>
+                                    <div id="payment-method-dropdown" class="custom-dropdown"></div>
+                                </div>
                             </div>
 
-                            <!-- Резервирование и Количество дней в одной строке -->
+                            <!-- Резервирование -->
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">{{ form.reservation.label }}</label>
-                                {{ form.reservation|add_class:"form-select rounded-3 py-2" }}
+                                <div class="position-relative">
+                                    <input type="text"
+                                           id="reservation-input"
+                                           name="reservation"
+                                           class="form-control rounded-3 py-2"
+                                           placeholder="Выберите резервирование..."
+                                           readonly
+                                           required>
+                                    <div id="reservation-dropdown" class="custom-dropdown"></div>
+                                </div>
                             </div>
 
+                            <!-- Кол-во дней -->
                             <div class="col-md-6" id="reservation-days-block" style="display:none;">
-                                <label class="form-label fw-semibold">{{ form.reservation_days.label }}</label>
-                                {{ form.reservation_days|add_class:"form-control rounded-3 py-2" }}
+                                <div class="position-relative">
+                                    <input type="text"
+                                           id="reservation-days-input"
+                                           name="reservation_days"
+                                           class="form-control rounded-3 py-2"
+                                           placeholder="Выберите количество дней..."
+                                           readonly>
+                                    <div id="reservation-days-dropdown" class="custom-dropdown"></div>
+                                </div>
                             </div>
 
                             <!-- Комментарий -->
@@ -82,7 +128,8 @@
 
                         <!-- Кнопки -->
                         <div class="d-grid gap-2 mt-4">
-                            <button type="submit" class="btn btn-primary py-3 rounded-3 fw-bold" style="background: #95444d; border: none;">
+                            <button type="submit" class="btn btn-primary py-3 rounded-3 fw-bold"
+                                    style="background: #95444d; border: none;">
                                 <i class="fas fa-check-circle me-2"></i>Оформить заявку
                             </button>
                             <a href="/account/" class="btn btn-outline-secondary py-3 rounded-3">
@@ -98,19 +145,37 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    const reservationField = document.getElementById("id_reservation");
+    const reservationField = document.getElementById("reservation-input");
     const daysBlock = document.getElementById("reservation-days-block");
 
     function toggleDays() {
-        if (reservationField.value === "yes") {
+        if (reservationField.value === "Да") {
             daysBlock.style.display = "block";
         } else {
             daysBlock.style.display = "none";
         }
     }
-
+    const daysInput = document.getElementById("reservation-days-input");
+        if (daysInput) {
+            daysInput.value = "";
+        }
     reservationField.addEventListener("change", toggleDays);
     toggleDays();
 });
+
+
+
 </script>
+<script>
+    window.detailList = {{ detail_choices|safe }};
+    window.deliveryList = {{ delivery_choices|safe }};
+    window.paymentList = {{ payment_choices|safe }};
+    window.reservationList = {{ reservation_choices|safe }};
+    window.reservationDaysList = {{ reservation_days_choices|safe }};
+
+
+
+</script>
+<link rel="stylesheet" href="{% static 'css/custom.css' %}">
+<script src="{% static 'js/application.js' %}"></script>
 {% endblock %}
