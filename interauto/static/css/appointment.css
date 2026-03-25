@@ -182,6 +182,13 @@
     border-color: #95444d;
     transform: translateY(-1px);
 }
+.datepicker-input::-webkit-calendar-picker-indicator,
+.datepicker-input::-moz-calendar-picker-indicator,
+.datepicker-input::-ms-expand {
+    display: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
 
 /* --- Анимация открытия календаря --- */
 .flatpickr-calendar.animate.open {
@@ -249,40 +256,19 @@
 /* ============================================
    Стили для поля выбора услуги
    ============================================ */
-.service-select {
+/* Элементы дропдауна для услуг */
+.service-item {
+    padding: 10px 14px;
     cursor: pointer;
-    background-color: white;
-    transition: all 0.3s ease;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%2395444d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 16px;
-    padding-right: 40px !important;
+    transition: 0.2s;
 }
 
-.service-select:hover {
-    border-color: #95444d;
-    transform: translateY(-1px);
+.service-item:hover {
+    background: rgba(149,68,77,0.1);
+    color: #95444d;
 }
 
-.service-select:focus {
-    border-color: #95444d;
-    box-shadow: 0 0 0 0.2rem rgba(149,68,77,0.25);
-}
-
-.service-select option {
-    padding: 10px;
-    font-size: 14px;
-}
-
-.service-select option:first-child {
-    color: #adb5bd;
-}
-
-.service-select option:checked {
+.service-item.active {
     background: #95444d;
     color: white;
 }

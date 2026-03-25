@@ -54,3 +54,4 @@ CAR_BRANDS = ["AITO", "Arcfox", "Avita", "Arrinera", "Artega", "Ascari", "Asia",
               "Zinoro", "Zhi Dou", "Zedriv", "Zhiji (IM Motors)", "Zarooq Motors", "Zastava", "Zenos Cars",
               "Zenvo Automotive", "Zibar", "Zotye", "ZX", "ЗАЗ", "ЗИЛ", "ЗиС", "УАЗ"]
 
+SERVICE_CHOICE = ['Техническое обслуживание', 'Ремонт', 'Диагностика']

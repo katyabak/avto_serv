@@ -88,11 +88,6 @@ class Client(AbstractBaseUser, PermissionsMixin):
 
 
 class Appointment(models.Model):
-    SERVICE_CHOICES = [
-        ('diagnostic', 'Диагностика'),
-        ('maintenance', 'Техническое обслуживание'),
-        ('repair', 'Ремонт'),
-    ]
 
     STATUS_CHOICES = [
         ('waiting', 'На рассмотрении'),
@@ -106,7 +101,7 @@ class Appointment(models.Model):
         related_name='appointments'
     )
 
-    service = models.CharField(max_length=50, choices=SERVICE_CHOICES)
+    service = models.CharField(max_length=50)
     date = models.DateField()
     time = models.TimeField()
     brand = models.CharField(max_length=100, default='brand')

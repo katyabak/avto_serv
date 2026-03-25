@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 
-from .constants import CAR_BRANDS
+from .constants import CAR_BRANDS, SERVICE_CHOICE
 from .forms import RegisterForm, LoginForm, ClientUpdateForm, AppointmentForm
 from django.contrib.auth.decorators import login_required
 from .forms import ApplicationForm
@@ -172,6 +172,7 @@ def appointment(request):
     return render(request, 'account/appointment.html', {
         'form': form,
         'user': user,
+        'service': SERVICE_CHOICE,
         'brands': CAR_BRANDS
     })
 

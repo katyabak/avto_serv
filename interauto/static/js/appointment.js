@@ -288,3 +288,76 @@
         }
     });
 })();
+
+// ============================================
+// Кастомный дропдаун для услуг
+// ============================================
+(function() {
+    const services = window.servicesList || [];
+    const input = document.getElementById("service-input");
+    const dropdown = document.getElementById("service-dropdown");
+    let currentFocus = -1;
+
+    function renderDropdown() {
+        dropdown.innerHTML = "";
+        currentFocus = -1;
+        services.forEach((service, index) => {
+            const div = document.createElement("div");
+            div.className = "service-item";
+            div.textContent = service;
+            div.onclick = () => selectItem(index);
+            dropdown.appendChild(div);
+        });
+        dropdown.classList.remove("d-none");
+    }
+
+    function setActive(index) {
+        const items = dropdown.querySelectorAll(".service-item");
+        items.forEach(item => item.classList.remove("active"));
+        if (index >= 0 && index < items.length) {
+            items[index].classList.add("active");
+            items[index].scrollIntoView({ block: "nearest" });
+        }
+    }
+
+    function selectItem(index) {
+        const items = dropdown.querySelectorAll(".service-item");
+        if (index >= 0 && index < items.length) {
+            input.value = items[index].textContent;
+        }
+        dropdown.classList.add("d-none");
+        currentFocus = -1;
+    }
+
+    input.addEventListener("click", () => {
+        renderDropdown();
+    });
+
+    input.addEventListener("keydown", (e) => {
+        const items = dropdown.querySelectorAll(".service-item");
+        if (dropdown.classList.contains("d-none")) return;
+
+        if (e.key === "ArrowDown") {
+            e.preventDefault();
+            currentFocus++;
+            if (currentFocus >= items.length) currentFocus = 0;
+            setActive(currentFocus);
+        } else if (e.key === "ArrowUp") {
+            e.preventDefault();
+            currentFocus--;
+            if (currentFocus < 0) currentFocus = items.length - 1;
+            setActive(currentFocus);
+        } else if (e.key === "Enter") {
+            e.preventDefault();
+            if (currentFocus > -1) selectItem(currentFocus);
+        } else if (e.key === "Escape") {
+            dropdown.classList.add("d-none");
+        }
+    });
+
+    document.addEventListener("click", (e) => {
+        if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.classList.add("d-none");
+        }
+    });
+})();
