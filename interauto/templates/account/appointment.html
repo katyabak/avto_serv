@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% load static %}
+{% load form_tags %}
+
+{% block content %}
+<div class="container px-3 py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10">
+            <!-- Заголовок с иконкой -->
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <div class=" p-3 rounded-3" style="background: transparent;">
+                    <i class="fas fa-car-alt fs-1" style="color: #95444d;"></i>
+                </div>
+                <div>
+                    <h1 class="fw-bold mb-1" style="color: #243642;">Запись на СТО</h1>
+                    <p class="text-muted mb-0">Заполните информацию для записи</p>
+                </div>
+            </div>
+
+            <!-- Форма -->
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-body p-4 p-lg-5">
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <!-- Информация о клиенте -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-sm-6">
+                                <div class="d-flex align-items-center gap-3 p-3 bg-light rounded-3">
+                                    <i class="fas fa-user fs-4" style="color: #95444d;"></i>
+                                    <div>
+                                        <small class="text-muted d-block">ФИО</small>
+                                        <span class="fw-semibold">{{ user.first_name|default:"—" }} {{ user.last_name|default:"—" }} {{ user.middle_name|default:"—" }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="d-flex align-items-center gap-3 p-3 bg-light rounded-3">
+                                    <i class="fas fa-phone fs-4" style="color: #95444d;"></i>
+                                    <div>
+                                        <small class="text-muted d-block">Телефон</small>
+                                        <span class="fw-semibold">{{ user.phone_number|default:"—" }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row g-4">
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Услуга</label>
+                                {{ form.service|add_class:"form-control rounded-3 py-2 service-select" }}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Дата</label>
+                                {{ form.date|add_class:"form-control rounded-3 py-2 datepicker-input" }}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Время</label>
+                                <div id="time-slots" class="d-flex flex-wrap gap-2 mt-1">
+                                    <div class="text-muted w-100 text-left py-3" id="time-placeholder">
+                                        Сначала выберите дату
+                                    </div>
+                                </div>
+                                <input type="hidden" name="time" id="selected-time">
+                            </div>
+
+                            <div class="col-md-6 position-relative">
+                                <label class="form-label fw-semibold">Марка автомобиля</label>
+                                <input type="text"
+                                       id="brand-input"
+                                       name="brand"
+                                       class="form-control rounded-3 py-2"
+                                       placeholder="Начните ввод..."
+                                       autocomplete="off"
+                                       required>
+                                <div id="brand-dropdown" class="brand-dropdown d-none"></div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Год выпуска</label>
+                                <input type="text"
+                                       name="year"
+                                       id="id_year"
+                                       maxlength="4"
+                                       class="form-control rounded-3 py-2"
+                                       placeholder="Например: 2015"
+                                       required>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Комментарий</label>
+                                {{ form.comment|add_class:"form-control rounded-3 py-2"}}
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary py-3 rounded-3 fw-bold"
+                                    style="background: #95444d; border: none;">
+                                <i class="fas fa-check-circle me-2"></i>Записаться
+                            </button>
+                            <a href="/account/" class="btn btn-outline-secondary py-3 rounded-3">
+                                <i class="fas fa-arrow-left me-2"></i>Вернуться
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Подключаем внешние библиотеки -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
+
+<!-- Подключаем статические файлы -->
+<link rel="stylesheet" href="{% static 'css/appointment.css' %}">
+<script>
+    // Передаем список марок в JavaScript
+    window.brandsList = {{ brands|safe }};
+
+</script>
+<script src="{% static 'js/appointment.js' %}"></script>
+{% endblock %}

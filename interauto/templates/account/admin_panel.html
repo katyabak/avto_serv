@@ -15,8 +15,12 @@
             </button>
 
             <button onclick="switchTab('applications')"
-                    class="btn w-100 {% if tab == 'applications' %}active-tab{% else %}inactive-tab{% endif %}">
+                    class="btn w-100 mb-2 {% if tab == 'applications' %}active-tab{% else %}inactive-tab{% endif %}">
                 Заявки клиентов
+            </button>
+            <button onclick="switchTab('appointments')"
+                    class="btn w-100 {% if tab == 'appointments' %}active-tab{% else %}inactive-tab{% endif %}">
+                Записи на СТО
             </button>
             <a href="/account/" class="btn w-100 mt-2 btn-secondary">Вернуться в профиль</a>
         </div>
@@ -29,25 +33,25 @@
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Email</th>
-                            <th>ФИО</th>
-                            <th>Телефон</th>
-                        </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Email</th>
+                        <th>ФИО</th>
+                        <th>Телефон</th>
+                    </tr>
                     </thead>
                     <tbody>
                     {% for client in clients %}
-                        <tr>
-                            <td>{{ client.id }}</td>
-                            <td>{{ client.email }}</td>
-                            <td>
-                                {{ client.last_name }}
-                                {{ client.first_name }}
-                                {{ client.middle_name }}
-                            </td>
-                            <td>{{ client.phone_number }}</td>
-                        </tr>
+                    <tr>
+                        <td>{{ client.id }}</td>
+                        <td>{{ client.email }}</td>
+                        <td>
+                            {{ client.last_name }}
+                            {{ client.first_name }}
+                            {{ client.middle_name }}
+                        </td>
+                        <td>{{ client.phone_number }}</td>
+                    </tr>
                     {% endfor %}
                     </tbody>
                 </table>
@@ -59,19 +63,19 @@
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>ФИО</th>
-                            <th>Телефон</th>
-                            <th>Запчасть</th>
-                            <th>Доставка</th>
-                            <th>Способ оплаты</th>
-                            <th>Резервирование</th>
-                            <th>Кол-во дней</th>
-                            <th>Комментарий</th>
-                            <th>Дата</th>
-                            <th>Статус</th>
-                        </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>ФИО</th>
+                        <th>Телефон</th>
+                        <th>Запчасть</th>
+                        <th>Доставка</th>
+                        <th>Способ оплаты</th>
+                        <th>Резервирование</th>
+                        <th>Кол-во дней</th>
+                        <th>Комментарий</th>
+                        <th>Дата</th>
+                        <th>Статус</th>
+                    </tr>
                     </thead>
                     <tbody>
                     {% for app in applications %}
@@ -113,7 +117,50 @@
                 </table>
             </div>
             {% endif %}
+            {% if tab == 'appointments' %}
+            <h4>Записи на СТО</h4>
 
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>ФИО</th>
+                    <th>Телефон</th>
+                    <th>Услуга</th>
+                    <th>Дата</th>
+                    <th>Время</th>
+                    <th>Бренд</th>
+                    <th>Год</th>
+                    <th>Комментарий</th>
+                    <th>Статус</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for app in appointments %}
+                <tr>
+                    <td>{{ app.id }}</td>
+                    <td>{{ app.client.last_name }} {{ app.client.first_name }}</td>
+                    <td>{{ app.client.phone_number }}</td>
+                    <td>{{ app.get_service_display }}</td>
+                    <td>{{ app.date }}</td>
+                    <td>{{ app.time }}</td>
+                    <td>{{ app.brand }}</td>
+                    <td>{{ app.year }}</td>
+                    <td>{{ app.comment }}</td>
+                    <td class="status-cell" data-appointment-id="{{ app.id }}">
+                        <div class="status-badge status-{{ app.status }}"
+                             onclick="showAppointmentStatusMenu(event, {{ app.id }}, '{{ app.status }}')">
+                            {% if app.status == 'waiting' %}На рассмотрении
+                            {% elif app.status == 'accepted' %}Принято
+                            {% elif app.status == 'canceled' %}Отменено
+                            {% else %}{{ app.status }}{% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -325,5 +372,107 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+function showAppointmentStatusMenu(event, appointmentId, currentStatus) {
+    event.stopPropagation();
+
+    if (activeMenu) {
+        activeMenu.remove();
+        activeMenu = null;
+    }
+
+    const menu = document.createElement('div');
+    menu.className = 'status-menu';
+    menu.style.position = 'absolute';
+
+    const rect = event.target.getBoundingClientRect();
+    menu.style.top = rect.bottom + window.scrollY + 'px';
+    menu.style.left = rect.left + window.scrollX + 'px';
+
+    const statuses = [
+        { value: 'waiting', label: 'На рассмотрении', class: 'waiting' },
+        { value: 'accepted', label: 'Принято', class: 'accepted' },
+        { value: 'canceled', label: 'Отменено', class: 'canceled' }
+    ];
+
+    statuses.forEach(status => {
+        const option = document.createElement('div');
+        option.className = `status-menu-item ${status.class}`;
+        option.textContent = status.label;
+        option.onclick = () => updateAppointmentStatus(appointmentId, status.value);
+        menu.appendChild(option);
+    });
+
+    document.body.appendChild(menu);
+    activeMenu = menu;
+
+    setTimeout(() => {
+        document.addEventListener('click', function closeMenu(e) {
+            if (!menu.contains(e.target) && e.target !== event.target) {
+                menu.remove();
+                activeMenu = null;
+                document.removeEventListener('click', closeMenu);
+            }
+        });
+    }, 0);
+}
+
+function updateAppointmentStatus(appointmentId, newStatus) {
+    const cell = document.querySelector(`.status-cell[data-appointment-id="${appointmentId}"]`);
+    if (!cell) return;
+
+    const statusBadge = cell.querySelector('.status-badge');
+    const originalText = statusBadge.innerHTML;
+    statusBadge.innerHTML = '<div class="loading-spinner"></div>';
+    statusBadge.style.cursor = 'default';
+    statusBadge.onclick = null;
+
+    fetch(`/account/appointment/${appointmentId}/update-status/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({ status: newStatus })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            let statusText = '';
+            let statusClass = '';
+
+            switch(newStatus) {
+                case 'waiting': statusText = 'На рассмотрении'; statusClass = 'status-waiting'; break;
+                case 'accepted': statusText = 'Принято'; statusClass = 'status-accepted'; break;
+                case 'canceled': statusText = 'Отменено'; statusClass = 'status-canceled'; break;
+            }
+
+            statusBadge.className = `status-badge ${statusClass}`;
+            statusBadge.innerHTML = statusText;
+            statusBadge.style.cursor = 'pointer';
+            statusBadge.onclick = (e) => showAppointmentStatusMenu(e, appointmentId, newStatus);
+
+            showNotification('Статус успешно обновлен', 'success');
+        } else {
+            statusBadge.innerHTML = originalText;
+            statusBadge.style.cursor = 'pointer';
+            statusBadge.onclick = (e) => showAppointmentStatusMenu(e, appointmentId, newStatus);
+            showNotification('Ошибка при обновлении статуса', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        statusBadge.innerHTML = originalText;
+        statusBadge.style.cursor = 'pointer';
+        statusBadge.onclick = (e) => showAppointmentStatusMenu(e, appointmentId, newStatus);
+        showNotification('Ошибка при обновлении статуса', 'error');
+    });
+
+    if (activeMenu) {
+        activeMenu.remove();
+        activeMenu = null;
+    }
+}
+
 </script>
 {% endblock %}

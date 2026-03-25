@@ -1,0 +1,288 @@
+/* ============================================
+   Стили для страницы записи на СТО
+   ============================================ */
+
+/* --- Стили для временных слотов --- */
+#time-slots .btn {
+    min-width: 70px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+#time-slots .btn-outline-secondary {
+    border: 1px solid #dee2e6;
+}
+
+#time-slots .btn-outline-secondary:hover:not(:disabled) {
+    background: #95444d;
+    border-color: #95444d;
+    color: white;
+    transform: translateY(-2px);
+}
+
+#time-slots .btn-success {
+    background: #95444d;
+    color: white;
+}
+
+#time-slots .btn-secondary:disabled {
+    background: #747678;
+    opacity: 0.6;
+}
+
+/* --- Общие стили для форм --- */
+.form-control:focus,
+.form-select:focus {
+    border-color: #95444d;
+    box-shadow: 0 0 0 0.2rem rgba(149,68,77,0.25);
+}
+
+/* --- Анимация загрузки --- */
+@keyframes pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+.loading-slots {
+    animation: pulse 1.5s infinite;
+}
+
+/* ============================================
+   Стили для Flatpickr календаря
+   ============================================ */
+.flatpickr-calendar {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+    border: none;
+    font-family: inherit;
+    padding: 12px;
+    width: 320px !important;
+}
+
+.flatpickr-calendar .flatpickr-month {
+    background: white;
+    color: #243642;
+    border-radius: 12px;
+    margin-bottom: 12px;
+}
+
+.flatpickr-calendar .flatpickr-month .flatpickr-prev-month,
+.flatpickr-calendar .flatpickr-month .flatpickr-next-month {
+    fill: #95444d;
+    transition: all 0.2s;
+}
+
+.flatpickr-calendar .flatpickr-month .flatpickr-prev-month:hover,
+.flatpickr-calendar .flatpickr-month .flatpickr-next-month:hover {
+    fill: #b85c66;
+    transform: scale(1.1);
+}
+
+.flatpickr-calendar .flatpickr-current-month {
+    font-size: 16px;
+    font-weight: 600;
+    color: #243642;
+    padding: 0;
+}
+
+.flatpickr-calendar .flatpickr-weekday {
+    color: #95444d;
+    font-weight: 600;
+    font-size: 13px;
+    width: 40px !important;
+}
+
+.flatpickr-calendar .flatpickr-days {
+    width: 280px !important;
+}
+
+.flatpickr-calendar .dayContainer {
+    width: 280px !important;
+    min-width: 280px !important;
+    max-width: 280px !important;
+    padding: 0;
+}
+
+.flatpickr-calendar .flatpickr-day {
+    border-radius: 12px;
+    color: #243642;
+    font-weight: 500;
+    transition: all 0.2s;
+    margin: 2px;
+    width: 36px !important;
+    max-width: 36px !important;
+    height: 36px !important;
+    line-height: 36px !important;
+    font-size: 14px;
+}
+
+.flatpickr-calendar .flatpickr-day:hover {
+    background: rgba(149,68,77,0.1);
+    border-color: #95444d;
+    transform: translateY(-2px);
+}
+
+.flatpickr-calendar .flatpickr-day.selected {
+    background: #95444d;
+    border-color: #95444d;
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(149,68,77,0.3);
+}
+
+.flatpickr-calendar .flatpickr-day.today {
+    border-color: #95444d;
+    background: rgba(149,68,77,0.1);
+    color: #95444d;
+}
+
+.flatpickr-calendar .flatpickr-day.today.selected {
+    background: #95444d;
+    color: white;
+}
+
+/* Стили для дней до сегодня (прошлые даты) */
+.flatpickr-calendar .flatpickr-day.prevMonthDay,
+.flatpickr-calendar .flatpickr-day.nextMonthDay {
+    color: #adb5bd !important;
+    opacity: 0.6;
+}
+
+.flatpickr-calendar .flatpickr-day.disabled,
+.flatpickr-calendar .flatpickr-day.disabled:hover {
+    color: #ced4da !important;
+    background: #f8f9fa !important;
+    cursor: not-allowed;
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+.flatpickr-calendar .flatpickr-day.inRange,
+.flatpickr-calendar .flatpickr-day.startRange,
+.flatpickr-calendar .flatpickr-day.endRange {
+    background: rgba(149,68,77,0.1);
+    border-color: #95444d;
+}
+
+/* --- Стили для поля даты --- */
+.datepicker-input {
+    cursor: pointer;
+    background-color: white;
+    transition: all 0.3s ease;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%2395444d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 18px;
+    padding-right: 40px !important;
+}
+
+.datepicker-input:hover {
+    border-color: #95444d;
+    transform: translateY(-1px);
+}
+
+/* --- Анимация открытия календаря --- */
+.flatpickr-calendar.animate.open {
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Дополнительные стили Flatpickr --- */
+.flatpickr-calendar .flatpickr-rContainer {
+    padding: 0;
+}
+
+.flatpickr-calendar .flatpickr-weekdays {
+    margin-bottom: 8px;
+}
+
+.flatpickr-calendar .flatpickr-weekdaycontainer {
+    display: flex;
+    justify-content: space-around;
+}
+
+/* ============================================
+   Стили для выпадающего списка марок авто
+   ============================================ */
+.brand-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    margin-top: 5px;
+}
+
+.brand-item {
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.brand-item:hover {
+    background: rgba(149,68,77,0.1);
+    color: #95444d;
+}
+
+.brand-item.active {
+    background: #95444d;
+    color: white;
+}
+
+/* ============================================
+   Стили для поля выбора услуги
+   ============================================ */
+.service-select {
+    cursor: pointer;
+    background-color: white;
+    transition: all 0.3s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%2395444d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 40px !important;
+}
+
+.service-select:hover {
+    border-color: #95444d;
+    transform: translateY(-1px);
+}
+
+.service-select:focus {
+    border-color: #95444d;
+    box-shadow: 0 0 0 0.2rem rgba(149,68,77,0.25);
+}
+
+.service-select option {
+    padding: 10px;
+    font-size: 14px;
+}
+
+.service-select option:first-child {
+    color: #adb5bd;
+}
+
+.service-select option:checked {
+    background: #95444d;
+    color: white;
+}

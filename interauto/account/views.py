@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from .forms import RegisterForm, LoginForm, ClientUpdateForm
+
+from .constants import CAR_BRANDS
+from .forms import RegisterForm, LoginForm, ClientUpdateForm, AppointmentForm
 from django.contrib.auth.decorators import login_required
 from .forms import ApplicationForm
-from .models import Client, ClientApplication
+from .models import Client, ClientApplication, Appointment
 from django.http import Http404, JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 import json
 
@@ -70,18 +71,22 @@ def admin_panel(request):
 
     tab = request.GET.get('tab', 'clients')
 
-    clients = None
-    applications = None
+    clients = []
+    applications = []
+    appointments = []
 
     if tab == 'clients':
         clients = Client.objects.all()
     elif tab == 'applications':
         applications = ClientApplication.objects.select_related('client').all().order_by('-created_at')
+    elif tab == 'appointments':
+        appointments = Appointment.objects.select_related('client').all().order_by('-created_at')
 
     return render(request, 'account/admin_panel.html', {
         'tab': tab,
         'clients': clients,
-        'applications': applications
+        'applications': applications,
+        'appointments': appointments
     })
 
 
@@ -139,6 +144,83 @@ def update_application_status(request, application_id):
         return JsonResponse({
             'success': True,
             'status': application.status,
+            'status_display': status_display
+        })
+
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Неверный формат данных'}, status=400)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+@login_required(login_url='/account/login/')
+def appointment(request):
+    user = request.user
+
+    if request.method == 'POST':
+        form = AppointmentForm(request.POST)
+
+        if form.is_valid():
+            appointment = form.save(commit=False)
+            appointment.client = user
+            appointment.save()
+
+            return redirect('/account/appointment/success/')
+    else:
+        form = AppointmentForm()
+
+    return render(request, 'account/appointment.html', {
+        'form': form,
+        'user': user,
+        'brands': CAR_BRANDS
+    })
+
+
+@login_required(login_url='/account/login/')
+def appointment_success(request):
+    return render(request, 'account/appointment_success.html')
+
+
+@login_required
+def get_busy_times(request):
+    date = request.GET.get('date')
+
+    busy_times = Appointment.objects.filter(
+        date=date,
+        status='accepted'
+    ).values_list('time', flat=True)
+
+    # переводим время в строку
+    busy_times = [t.strftime("%H:%M") for t in busy_times]
+
+    return JsonResponse({'busy_times': busy_times})
+
+
+@login_required
+@require_POST
+def update_appointment_status(request, appointment_id):
+    """Обновление статуса записи на СТО"""
+    if not request.user.is_staff:
+        return JsonResponse({'error': 'Доступ запрещен'}, status=403)
+
+    try:
+        data = json.loads(request.body)
+        new_status = data.get('status')
+
+        valid_statuses = ['waiting', 'accepted', 'canceled']
+        if new_status not in valid_statuses:
+            return JsonResponse({'error': 'Недопустимый статус'}, status=400)
+
+        appointment = get_object_or_404(Appointment, id=appointment_id)
+        appointment.status = new_status
+        appointment.save()
+
+        # Возвращаем обновленную информацию
+        status_display = dict(Appointment.STATUS_CHOICES).get(new_status, new_status)
+
+        return JsonResponse({
+            'success': True,
+            'status': appointment.status,
             'status_display': status_display
         })
 

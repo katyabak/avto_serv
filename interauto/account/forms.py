@@ -2,9 +2,9 @@ from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.forms import SetPasswordForm
-from .models import Client
+from .models import Client, Appointment
 from .models import ClientApplication
-
+import datetime
 
 class RegisterForm(forms.ModelForm):
     password1 = forms.CharField(label='Пароль', widget=forms.PasswordInput)
@@ -161,3 +161,47 @@ class ApplicationForm(forms.ModelForm):
             raise forms.ValidationError("Укажите количество дней резервирования")
 
         return cleaned_data
+
+
+class AppointmentForm(forms.ModelForm):
+    SERVICE_CHOICES = [
+        ('', 'Выберите услугу из списка'),
+        ('diagnostic', 'Диагностика'),
+        ('maintenance', 'Техническое обслуживание'),
+        ('repair', 'Ремонт'),
+    ]
+
+    service = forms.ChoiceField(
+        choices=SERVICE_CHOICES,
+        required=True
+    )
+
+    date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'})
+    )
+
+    time = forms.TimeField(required=True)
+    brand = forms.CharField(required=True)
+
+    year = forms.CharField(required=True)
+
+    class Meta:
+        model = Appointment
+        fields = ['service', 'date', 'time', 'brand', 'year', 'comment']
+
+    def clean_year(self):
+        year = self.cleaned_data.get('year')
+
+        if not year.isdigit():
+            raise forms.ValidationError("Год должен содержать только цифры")
+
+        if len(year) != 4:
+            raise forms.ValidationError("Введите год в формате YYYY")
+
+        year_int = int(year)
+        current_year = datetime.datetime.now().year
+
+        if year_int < 1900 or year_int > current_year:
+            raise forms.ValidationError("Введите корректный год")
+
+        return year_int

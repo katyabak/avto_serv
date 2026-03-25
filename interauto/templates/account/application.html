@@ -2,55 +2,100 @@
 {% load form_tags %}
 
 {% block content %}
-<div class="container py-5" style="max-width:500px;">
+<div class="container px-3 py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10">
+            <!-- Заголовок с иконкой -->
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <div class="p-3 rounded-3" style="background: transparent;">
+                    <i class="fas fa-shopping-cart fs-1" style="color: #95444d;"></i>
+                </div>
+                <div>
+                    <h1 class="fw-bold mb-1" style="color: #243642;">Оформление заявки</h1>
+                    <p class="text-muted mb-0">Заполните информацию для заказа</p>
+                </div>
+            </div>
 
-    <h2 class="text-center mb-4 fw-bold">Оформление заявки</h2>
+            <!-- Форма -->
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-body p-4 p-lg-5">
+                    <form method="post">
+                        {% csrf_token %}
 
-    <form method="post">
-        {% csrf_token %}
+                        <!-- Информация о клиенте -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-sm-6">
+                                <div class="d-flex align-items-center gap-3 p-3 bg-light rounded-3">
+                                    <i class="fas fa-user fs-4" style="color: #95444d;"></i>
+                                    <div>
+                                        <small class="text-muted d-block">ФИО</small>
+                                        <span class="fw-semibold">{{ user.first_name|default:"—" }} {{ user.last_name|default:"—" }} {{ user.middle_name|default:"—" }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="d-flex align-items-center gap-3 p-3 bg-light rounded-3">
+                                    <i class="fas fa-phone fs-4" style="color: #95444d;"></i>
+                                    <div>
+                                        <small class="text-muted d-block">Телефон</small>
+                                        <span class="fw-semibold">{{ user.phone_number|default:"—" }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-        <p><strong>Имя:</strong> {{ user.first_name }}</p>
-        <p><strong>Фамилия:</strong> {{ user.last_name }}</p>
-        <p><strong>Отчество:</strong> {{ user.middle_name }}</p>
-        <p><strong>Телефон:</strong> {{ user.phone_number }}</p>
+                        <div class="row g-4">
+                            <!-- Запчасть (Detail) - на всю ширину -->
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">{{ form.detail.label }}</label>
+                                {{ form.detail|add_class:"form-control rounded-3 py-2" }}
+                            </div>
 
-        <div class="mb-3">
-            {{ form.detail.label_tag }}
-            {{ form.detail|add_class:"form-control" }}
+                            <!-- Доставка и Способ оплаты в одной строке -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">{{ form.delivery.label }}</label>
+                                {{ form.delivery|add_class:"form-select rounded-3 py-2" }}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">{{ form.payment_method.label }}</label>
+                                {{ form.payment_method|add_class:"form-select rounded-3 py-2" }}
+                            </div>
+
+                            <!-- Резервирование и Количество дней в одной строке -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">{{ form.reservation.label }}</label>
+                                {{ form.reservation|add_class:"form-select rounded-3 py-2" }}
+                            </div>
+
+                            <div class="col-md-6" id="reservation-days-block" style="display:none;">
+                                <label class="form-label fw-semibold">{{ form.reservation_days.label }}</label>
+                                {{ form.reservation_days|add_class:"form-control rounded-3 py-2" }}
+                            </div>
+
+                            <!-- Комментарий -->
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">{{ form.comment.label }}</label>
+                                {{ form.comment|add_class:"form-control rounded-3 py-2" }}
+                            </div>
+                        </div>
+
+                        <!-- Кнопки -->
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary py-3 rounded-3 fw-bold" style="background: #95444d; border: none;">
+                                <i class="fas fa-check-circle me-2"></i>Оформить заявку
+                            </button>
+                            <a href="/account/" class="btn btn-outline-secondary py-3 rounded-3">
+                                <i class="fas fa-arrow-left me-2"></i>Вернуться в профиль
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div class="mb-3">
-            {{ form.delivery.label_tag }}
-            {{ form.delivery|add_class:"form-control" }}
-        </div>
-
-        <div class="mb-3">
-            {{ form.payment_method.label_tag }}
-            {{ form.payment_method|add_class:"form-control" }}
-        </div>
-
-        <div class="mb-3">
-            {{ form.reservation.label_tag }}
-            {{ form.reservation|add_class:"form-control" }}
-        </div>
-
-        <div class="mb-3" id="reservation-days-block" style="display:none;">
-            {{ form.reservation_days.label_tag }}
-            {{ form.reservation_days|add_class:"form-control" }}
-        </div>
-
-        <div class="mb-3">
-            {{ form.comment.label_tag }}
-            {{ form.comment|add_class:"form-control" }}
-        </div>
-
-        <button type="submit" class="btn btn-success w-100">
-            Оформить заявку
-        </button>
-        <a href="/account/" class="btn w-100 mt-2 btn-secondary">Вернуться в профиль</a>
-
-    </form>
-
+    </div>
 </div>
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const reservationField = document.getElementById("id_reservation");

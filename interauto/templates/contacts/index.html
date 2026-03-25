@@ -2,26 +2,90 @@
 {% load static %}
 
 {% block content %}
-<div class="container py-5">
-    <!-- Заголовок -->
-    <h2 class="fw-bold mb-4">Контакты</h2>
+<div class="container px-5 py-5">
+    <div class="row justify-content-center">
+        <div class="col-10 col-lg-12">
+            <!-- Заголовок с иконкой -->
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <div class="p-3 rounded-3" style="background: transparent;">
+                    <i class="fas fa-phone-alt fs-1" style="color: #95444d;"></i>
+                </div>
+                <div>
+                    <h1 class="fw-bold mb-1" style="color: #243642;">Свяжитесь с нами</h1>
+                    <p class="text-muted mb-0">Мы всегда готовы помочь!</p>
+                </div>
+            </div>
 
-    <!-- Текст -->
-    <div class="mb-4" style="text-align: left; color: #1e1e1e;">
-        <p><strong>Главный офис компании «ИНТЕРАВТО»</strong> находится по адресу:<br>
-        644073, Омск, Кировский округ, Солнечная 2-я улица, 46Б, 1 этаж</p>
+            <!-- Две колонки -->
+            <div class="row g-4">
+                <!-- Левая колонка - контактная информация -->
+                <div class="col-md-5">
+                    <div class="card border-0 shadow-lg rounded-4 h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex flex-column gap-4">
+                                <!-- Адрес -->
+                                <div>
+                                    <div class="d-flex align-items-center gap-3 mb-3">
+                                        <i class="fas fa-map-marker-alt fs-4" style="color: #95444d;"></i>
+                                        <h5 class="fw-bold mb-0" style="color: #243642;">Адрес</h5>
+                                    </div>
+                                    <p class="text-muted mb-0">Омск, Кировский округ, Солнечная 2-я улица, 46Б, 1 этаж</p>
+                                    <p class="text-muted mt-1 mb-0">644073</p>
+                                </div>
 
-        <p><strong>Телефоны:</strong><br>
-        +7 (3812) 63‒77‒73<br>
-        +7‒913‒688‒29‒67</p>
+                                <!-- Телефоны -->
+                                <div>
+                                    <div class="d-flex align-items-center gap-3 mb-3">
+                                        <i class="fas fa-phone-alt fs-4" style="color: #95444d;"></i>
+                                        <h5 class="fw-bold mb-0" style="color: #243642;">Телефоны</h5>
+                                    </div>
+                                    <p class="mb-1">
+                                        <a href="tel:+73812637773" class="text-decoration-none" style="color: #95444d;">+7 (3812) 63 77 73</a>
+                                    </p>
+                                    <p class="mb-0">
+                                        <a href="tel:+79136882967" class="text-decoration-none" style="color: #95444d;">+7 913 688 29 67</a>
+                                    </p>
+                                </div>
 
-        <p><strong>E-mail:</strong> interavto-servis@yandex.ru</p>
-        <p><strong>E-mail для заказов:</strong> lisienko@interauto55.ru</p>
-    </div>
+                                <!-- Email -->
+                                <div>
+                                    <div class="d-flex align-items-center gap-3 mb-3">
+                                        <i class="fas fa-envelope fs-4" style="color: #95444d;"></i>
+                                        <h5 class="fw-bold mb-0" style="color: #243642;">Email</h5>
+                                    </div>
+                                    <p class="mb-1">
+                                        <a href="mailto:interavto-servis@yandex.ru" class="text-decoration-none" style="color: #95444d;">interavto-servis@yandex.ru</a>
+                                    </p>
+                                    <p class="mb-0">
+                                        <a href="mailto:lisienko@interauto55.ru" class="text-decoration-none" style="color: #95444d;">lisienko@interauto55.ru</a>
+                                        <span class="text-muted ms-2">(Для заказов)</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-    <!-- Картинка -->
-    <div class="text-left">
-        <img src="{% static 'images/office.png' %}" alt="Офис ИнтерАвто" class="img-fluid rounded" style="max-width: 100%; height: auto;">
+                <!-- Правая колонка - изображение (увеличена ширина) -->
+                <div class="col-md-7">
+                    <div class="card border-0 shadow-lg rounded-4 overflow-hidden h-100">
+                        <div class="card-body p-0">
+                            <img src="{% static 'images/office.png' %}" alt="Офис ИнтерАвто" class="img-fluid w-100 h-100" style="object-fit: cover; min-height: 300px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
     </div>
 </div>
+
+<style>
+@media (min-width: 768px) {
+    .w-md-auto {
+        width: auto !important;
+    }
+}
+</style>
 {% endblock %}

@@ -85,3 +85,44 @@ class Client(AbstractBaseUser, PermissionsMixin):
 
     def has_module_perms(self, app_label):
         return self.is_admin
+
+
+class Appointment(models.Model):
+    SERVICE_CHOICES = [
+        ('diagnostic', 'Диагностика'),
+        ('maintenance', 'Техническое обслуживание'),
+        ('repair', 'Ремонт'),
+    ]
+
+    STATUS_CHOICES = [
+        ('waiting', 'На рассмотрении'),
+        ('accepted', 'Принят'),
+        ('canceled', 'Отменено'),
+    ]
+
+    client = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='appointments'
+    )
+
+    service = models.CharField(max_length=50, choices=SERVICE_CHOICES)
+    date = models.DateField()
+    time = models.TimeField()
+    brand = models.CharField(max_length=100, default='brand')
+    year = models.PositiveIntegerField(default='0')
+    comment = models.CharField(max_length=255, blank=True)
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='waiting'
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('date', 'time')  # блокирует занятое время
+
+    def __str__(self):
+        return f'Запись {self.id}'

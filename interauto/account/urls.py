@@ -13,6 +13,11 @@ urlpatterns = [
     path('application/success/', views.application_success, name='application_success'),
     path('application/<int:application_id>/update-status/', views.update_application_status,
          name='update_application_status'),
+    path('appointment/', views.appointment, name='appointment'),
+    path('appointment/success/', views.appointment_success, name='appointment_success'),
+    path('appointment/busy-times/', views.get_busy_times, name='busy_times'),
+    path('appointment/<int:appointment_id>/update-status/', views.update_appointment_status,
+         name='update_appointment_status'),
 
     # Сброс пароля — ввод email
     path('password_reset/', auth_views.PasswordResetView.as_view(

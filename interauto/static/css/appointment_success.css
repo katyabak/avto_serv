@@ -1,0 +1,48 @@
+
+.success-icon {
+    animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.alert {
+    border-left: 4px solid #95444d;
+    background: #f8f9fa;
+}
+
+.btn-outline-secondary {
+    border: 1px solid #dee2e6;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-secondary:hover {
+    background: #95444d;
+    border-color: #95444d;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+}
+
+.card {
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
