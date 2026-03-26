@@ -1,0 +1,307 @@
+let activeMenu = null;
+
+function switchTab(tabName) {
+    const url = new URL(window.location);
+    url.searchParams.set('tab', tabName);
+
+    // заменяет URL БЕЗ добавления в историю
+    window.history.replaceState({}, '', url);
+
+    // перезагрузка страницы
+    window.location.reload();
+}
+
+function showStatusMenu(event, applicationId, currentStatus) {
+    event.stopPropagation();
+
+    // Закрываем активное меню если оно есть
+    if (activeMenu) {
+        activeMenu.remove();
+        activeMenu = null;
+    }
+
+    // Создаем меню
+    const menu = document.createElement('div');
+    menu.className = 'status-menu';
+    menu.style.position = 'absolute';
+
+    // Определяем позицию меню
+    const target = event.target;
+    const rect = target.getBoundingClientRect();
+    menu.style.top = rect.bottom + window.scrollY + 'px';
+    menu.style.left = rect.left + window.scrollX + 'px';
+
+    // Опции статусов
+    const statuses = [
+        { value: 'waiting', label: 'На рассмотрении', class: 'waiting' },
+        { value: 'accepted', label: 'Принят', class: 'accepted' },
+        { value: 'canceled', label: 'Отменено', class: 'canceled' }
+    ];
+
+    statuses.forEach(status => {
+        const option = document.createElement('div');
+        option.className = `status-menu-item ${status.class}`;
+        option.textContent = status.label;
+        option.onclick = () => updateStatus(applicationId, status.value);
+        menu.appendChild(option);
+    });
+
+    document.body.appendChild(menu);
+    activeMenu = menu;
+
+    // Закрываем меню при клике вне его
+    setTimeout(() => {
+        document.addEventListener('click', function closeMenu(e) {
+            if (!menu.contains(e.target) && e.target !== target) {
+                menu.remove();
+                activeMenu = null;
+                document.removeEventListener('click', closeMenu);
+            }
+        });
+    }, 0);
+}
+
+function updateStatus(applicationId, newStatus) {
+    // Показываем индикатор загрузки
+    const cell = document.querySelector(`.status-cell[data-application-id="${applicationId}"]`);
+    if (!cell) return;
+
+    const statusBadge = cell.querySelector('.status-badge');
+    const originalText = statusBadge.innerHTML;
+    statusBadge.innerHTML = '<div class="loading-spinner"></div>';
+    statusBadge.style.cursor = 'default';
+    statusBadge.onclick = null;
+
+    // Отправляем запрос на сервер
+    fetch(`/account/application/${applicationId}/update-status/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({ status: newStatus })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Обновляем отображение статуса
+            let statusText = '';
+            let statusClass = '';
+
+            switch(newStatus) {
+                case 'waiting':
+                    statusText = 'На рассмотрении';
+                    statusClass = 'status-waiting';
+                    break;
+                case 'accepted':
+                    statusText = 'Принят';
+                    statusClass = 'status-accepted';
+                    break;
+                case 'canceled':
+                    statusText = 'Отменено';
+                    statusClass = 'status-canceled';
+                    break;
+            }
+
+            statusBadge.className = `status-badge ${statusClass}`;
+            statusBadge.innerHTML = statusText;
+            statusBadge.style.cursor = 'pointer';
+            statusBadge.onclick = (e) => showStatusMenu(e, applicationId, newStatus);
+
+            // Показываем уведомление об успехе
+            showNotification('Статус успешно обновлен', 'success');
+        } else {
+            statusBadge.innerHTML = originalText;
+            statusBadge.style.cursor = 'pointer';
+            statusBadge.onclick = (e) => showStatusMenu(e, applicationId, currentStatus);
+            showNotification('Ошибка при обновлении статуса', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        statusBadge.innerHTML = originalText;
+        statusBadge.style.cursor = 'pointer';
+        statusBadge.onclick = (e) => showStatusMenu(e, applicationId, currentStatus);
+        showNotification('Ошибка при обновлении статуса', 'error');
+    });
+
+    // Закрываем меню
+    if (activeMenu) {
+        activeMenu.remove();
+        activeMenu = null;
+    }
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function showNotification(message, type) {
+    // Элемент уведомления
+    const notification = document.createElement('div');
+    notification.textContent = message;
+    notification.style.position = 'fixed';
+    notification.style.bottom = '20px';
+    notification.style.right = '20px';
+    notification.style.padding = '12px 24px';
+    notification.style.borderRadius = '4px';
+    notification.style.zIndex = '9999';
+    notification.style.animation = 'slideIn 0.3s ease-out';
+
+    if (type === 'success') {
+        notification.style.backgroundColor = '#28a745';
+        notification.style.color = 'white';
+    } else {
+        notification.style.backgroundColor = '#dc3545';
+        notification.style.color = 'white';
+    }
+
+    document.body.appendChild(notification);
+
+    // Удаляем уведомление через 3 секунды
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease-out';
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    }, 3000);
+}
+
+// Cтили для анимации
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(style);
+
+function showAppointmentStatusMenu(event, appointmentId, currentStatus) {
+    event.stopPropagation();
+
+    if (activeMenu) {
+        activeMenu.remove();
+        activeMenu = null;
+    }
+
+    const menu = document.createElement('div');
+    menu.className = 'status-menu';
+    menu.style.position = 'absolute';
+
+    const rect = event.target.getBoundingClientRect();
+    menu.style.top = rect.bottom + window.scrollY + 'px';
+    menu.style.left = rect.left + window.scrollX + 'px';
+
+    const statuses = [
+        { value: 'waiting', label: 'На рассмотрении', class: 'waiting' },
+        { value: 'accepted', label: 'Принято', class: 'accepted' },
+        { value: 'canceled', label: 'Отменено', class: 'canceled' }
+    ];
+
+    statuses.forEach(status => {
+        const option = document.createElement('div');
+        option.className = `status-menu-item ${status.class}`;
+        option.textContent = status.label;
+        option.onclick = () => updateAppointmentStatus(appointmentId, status.value);
+        menu.appendChild(option);
+    });
+
+    document.body.appendChild(menu);
+    activeMenu = menu;
+
+    setTimeout(() => {
+        document.addEventListener('click', function closeMenu(e) {
+            if (!menu.contains(e.target) && e.target !== event.target) {
+                menu.remove();
+                activeMenu = null;
+                document.removeEventListener('click', closeMenu);
+            }
+        });
+    }, 0);
+}
+
+function updateAppointmentStatus(appointmentId, newStatus) {
+    const cell = document.querySelector(`.status-cell[data-appointment-id="${appointmentId}"]`);
+    if (!cell) return;
+
+    const statusBadge = cell.querySelector('.status-badge');
+    const originalText = statusBadge.innerHTML;
+    statusBadge.innerHTML = '<div class="loading-spinner"></div>';
+    statusBadge.style.cursor = 'default';
+    statusBadge.onclick = null;
+
+    fetch(`/account/appointment/${appointmentId}/update-status/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({ status: newStatus })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            let statusText = '';
+            let statusClass = '';
+
+            switch(newStatus) {
+                case 'waiting': statusText = 'На рассмотрении'; statusClass = 'status-waiting'; break;
+                case 'accepted': statusText = 'Принято'; statusClass = 'status-accepted'; break;
+                case 'canceled': statusText = 'Отменено'; statusClass = 'status-canceled'; break;
+            }
+
+            statusBadge.className = `status-badge ${statusClass}`;
+            statusBadge.innerHTML = statusText;
+            statusBadge.style.cursor = 'pointer';
+            statusBadge.onclick = (e) => showAppointmentStatusMenu(e, appointmentId, newStatus);
+
+            showNotification('Статус успешно обновлен', 'success');
+        } else {
+            statusBadge.innerHTML = originalText;
+            statusBadge.style.cursor = 'pointer';
+            statusBadge.onclick = (e) => showAppointmentStatusMenu(e, appointmentId, newStatus);
+            showNotification('Ошибка при обновлении статуса', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        statusBadge.innerHTML = originalText;
+        statusBadge.style.cursor = 'pointer';
+        statusBadge.onclick = (e) => showAppointmentStatusMenu(e, appointmentId, newStatus);
+        showNotification('Ошибка при обновлении статуса', 'error');
+    });
+
+    if (activeMenu) {
+        activeMenu.remove();
+        activeMenu = null;
+    }
+}

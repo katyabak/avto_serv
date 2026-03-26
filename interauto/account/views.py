@@ -16,7 +16,7 @@ from account import constants
 def profile(request):
     user = request.user
 
-    applications = user.applications.all()
+    applications = user.applications.all().order_by('-created_at')
 
     if request.method == 'POST':
         form = ClientUpdateForm(request.POST, instance=user)
