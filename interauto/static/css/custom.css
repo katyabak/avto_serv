@@ -254,29 +254,37 @@
 /* Элементы дропдауна */
 .custom-dropdown {
     position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    max-height: 200px;
-    overflow-y: auto;
     z-index: 1000;
-    margin-top: 5px;
+    width: 100%;
+    max-height: 250px;
+    overflow-y: auto;
+    background: white;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
 }
-.custom-item {
+
+.custom-dropdown.d-none {
+    display: none;
+}
+
+.custom-dropdown .custom-item {
     padding: 10px 14px;
     cursor: pointer;
     transition: 0.2s;
+    border-bottom: 1px solid #f0f0f0;
 }
 
-.custom-item:hover {
+.custom-dropdown .custom-item:last-child {
+    border-bottom: none;
+}
+
+.custom-dropdown .custom-item:hover {
     background: rgba(149,68,77,0.1);
     color: #95444d;
 }
 
-.custom-item.active {
+.custom-dropdown .custom-item.active {
     background: #95444d;
     color: white;
 }

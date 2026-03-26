@@ -54,20 +54,22 @@
                             <!-- Запчасть -->
                             <div class="col-12">
                                 <div class="position-relative">
+                                    <label class="form-label fw-semibold">Запчасть:</label>
                                     <input type="text"
                                            id="detail-input"
                                            name="detail"
                                            class="form-control rounded-3 py-2"
-                                           placeholder="Выберите запчасть..."
-                                           readonly
+                                           placeholder="Введите название запчасти..."
+                                           autocomplete="off"
                                            required>
-                                    <div id="detail-dropdown" class="custom-dropdown"></div>
+                                    <div id="detail-dropdown" class="custom-dropdown d-none"></div>
                                 </div>
                             </div>
 
                             <!-- Доставка и Способ оплаты в одной строке -->
                             <div class="col-md-6">
                                 <div class="position-relative">
+                                    <label class="form-label fw-semibold">Способ доставки:</label>
                                     <input type="text"
                                            id="delivery-input"
                                            name="delivery"
@@ -81,6 +83,7 @@
                             <!-- Способ оплаты -->
                             <div class="col-md-6">
                                 <div class="position-relative">
+                                    <label class="form-label fw-semibold">Способ оплаты:</label>
                                     <input type="text"
                                            id="payment-method-input"
                                            name="payment_method"
@@ -95,6 +98,7 @@
                             <!-- Резервирование -->
                             <div class="col-md-6">
                                 <div class="position-relative">
+                                    <label class="form-label fw-semibold">Резервирование:</label>
                                     <input type="text"
                                            id="reservation-input"
                                            name="reservation"
@@ -109,6 +113,7 @@
                             <!-- Кол-во дней -->
                             <div class="col-md-6" id="reservation-days-block" style="display:none;">
                                 <div class="position-relative">
+                                    <label class="form-label fw-semibold">Кол-во дней</label>
                                     <input type="text"
                                            id="reservation-days-input"
                                            name="reservation_days"
