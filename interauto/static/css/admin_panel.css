@@ -1,0 +1,16 @@
+/* Табы */
+.active-tab {
+    background: #95444d !important;
+    color: white !important;
+}
+.inactive-tab {
+    background: #f8f9fa !important;
+    color: #243642 !important;
+    border: 2px solid #dee2e6;
+}
+.inactive-tab:hover {
+    background: #e9ecef !important;
+}
+.table-hover tbody tr:hover {
+    background-color: rgba(149,68,77,0.05);
+}

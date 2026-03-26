@@ -11,6 +11,20 @@
     {% endif %}
     <div class="row justify-content-center">
         <div class="col-12 col-lg-10">
+            <!-- Хлебные крошки -->
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="/account/" class="text-decoration-none" style="color: #95444d;">
+                            <i class="fas fa-user me-2"></i>Профиль
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page" style="color: #243642;">
+                        Оформление заявки
+                    </li>
+                </ol>
+            </nav>
+
             <!-- Заголовок с иконкой -->
             <div class="d-flex align-items-center gap-3 mb-4">
                 <div class="p-3 rounded-3" style="background: transparent;">
@@ -138,7 +152,7 @@
                                 <i class="fas fa-check-circle me-2"></i>Оформить заявку
                             </button>
                             <a href="/account/" class="btn btn-outline-secondary py-3 rounded-3">
-                                <i class="fas fa-arrow-left me-2"></i>Вернуться в профиль
+                                <i class="fas fa-times me-2"></i>Отмена
                             </a>
                         </div>
                     </form>

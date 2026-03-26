@@ -145,29 +145,7 @@
     color: #95444d;
 }
 
-/* Админ-панель */
-.active-tab {
-    background-color: #334B5B;
-    color: white;
-    border: none;
-}
 
-.active-tab:hover {
-    background-color: #334B5B;
-    color: white;
-}
-
-.inactive-tab {
-    background-color: white;
-    color: #334B5B;
-    border: 1px solid #334B5B;
-}
-
-.inactive-tab:hover {
-    background-color: white;
-    color: #334B5B;
-    border: 1px solid #334B5B;
-}
 
 /* Стили для статусов в админ-панеле */
 .status-badge {
@@ -287,4 +265,14 @@
 .custom-dropdown .custom-item.active {
     background: #95444d;
     color: white;
+}
+
+/* Хлебные крошки */
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "›";
+    color: #95444d;
+    font-size: 18px;
+}
+.breadcrumb-item a:hover {
+    color: #b85c66 !important;
 }

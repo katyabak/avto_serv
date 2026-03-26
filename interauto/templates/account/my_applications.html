@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load form_tags %}
+{% load static %}
 
 {% block content %}
 <div class="container py-5">
@@ -10,7 +11,7 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
                         <a href="/account/" class="text-decoration-none" style="color: #95444d;">
-                            <i class="fas fa-user me-1"></i>Профиль
+                            <i class="fas fa-user me-2"></i>Профиль
                         </a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page" style="color: #243642;">
@@ -81,14 +82,5 @@
     </div>
 </div>
 
-<style>
-.breadcrumb-item + .breadcrumb-item::before {
-    content: "›";
-    color: #95444d;
-    font-size: 18px;
-}
-.breadcrumb-item a:hover {
-    color: #b85c66 !important;
-}
-</style>
+<link rel="stylesheet" href="{% static 'css/custom.css' %}">
 {% endblock %}

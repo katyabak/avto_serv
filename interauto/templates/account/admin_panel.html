@@ -5,35 +5,56 @@
 {% block content %}
 
 <div class="container py-5">
-    <h2 class="fw-bold mb-4 text-center">Админ-панель</h2>
+    <!-- Хлебные крошки -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/account/" class="text-decoration-none" style="color: #95444d;">
+                    <i class="fas fa-user me-2"></i>Профиль
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page" style="color: #243642;">
+                Админ-панель
+            </li>
+        </ol>
+    </nav>
+
+    <!--    <h2 class="fw-bold mb-4 text-center">Админ-панель</h2>-->
 
     <div class="row">
         <!-- ЛЕВОЕ МЕНЮ -->
-        <div class="col-3">
-            <button onclick="switchTab('clients')"
-                    class="btn w-100 mb-2 {% if tab == 'clients' %}active-tab{% else %}inactive-tab{% endif %}">
-                Клиенты
-            </button>
+        <div class="col-12 col-md-3 mb-4 mb-md-0">
+            <div class="d-flex d-md-block flex-row gap-2">
+                <button onclick="switchTab('clients')"
+                        class="btn w-100 mb-2 {% if tab == 'clients' %}active-tab{% else %}inactive-tab{% endif %}">
+                    <i class="fas fa-users me-2"></i>Клиенты
+                </button>
 
-            <button onclick="switchTab('applications')"
-                    class="btn w-100 mb-2 {% if tab == 'applications' %}active-tab{% else %}inactive-tab{% endif %}">
-                Заявки клиентов
-            </button>
-            <button onclick="switchTab('appointments')"
-                    class="btn w-100 {% if tab == 'appointments' %}active-tab{% else %}inactive-tab{% endif %}">
-                Записи на СТО
-            </button>
-            <a href="/account/" class="btn w-100 mt-2 btn-secondary">Вернуться в профиль</a>
+                <button onclick="switchTab('applications')"
+                        class="btn w-100 mb-2 {% if tab == 'applications' %}active-tab{% else %}inactive-tab{% endif %}">
+                    <i class="fas fa-clipboard-list me-2"></i>Заявки клиентов
+                </button>
+                <button onclick="switchTab('appointments')"
+                        class="btn w-100 mb-2 {% if tab == 'appointments' %}active-tab{% else %}inactive-tab{% endif %}">
+                    <i class="fas fa-calendar-check me-2"></i>Записи на СТО
+                </button>
+
+            </div>
         </div>
 
         <!-- ПРАВАЯ ЧАСТЬ -->
         <div class="col-12 col-md-9">
-
             {% if tab == 'clients' %}
-            <h4 class="mb-3">Список клиентов</h4>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-bold mb-0" style="color: black;">Список клиентов</h4>
+                <span class="badge bg-light text-dark px-3 py-2 rounded-pill">
+                    <i class="fas fa-users me-1" style="color: #95444d;"></i>
+                    {{ clients|length }} клиента
+                </span>
+            </div>
             <div class="table-responsive">
-                <table class="table table-bordered">
-                    <thead>
+                <table class="table table-hover">
+                    <thead class="table-light">
                     <tr>
                         <th>№</th>
                         <th>Email</th>
@@ -44,7 +65,7 @@
                     <tbody>
                     {% for client in clients %}
                     <tr>
-                        <td>{{ forloop.counter }}</td>
+                        <td class="fw-bold" style="color: #95444d;">{{ forloop.counter }}</td>
                         <td>{{ client.email }}</td>
                         <td>
                             {{ client.last_name }}
@@ -60,10 +81,16 @@
             {% endif %}
 
             {% if tab == 'applications' %}
-            <h4 class="mb-3">Заявки клиентов</h4>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-bold mb-0" style="color: black;">Заявки клиентов</h4>
+                <span class="badge bg-light text-dark px-3 py-2 rounded-pill">
+                    <i class="fas fa-clipboard-list me-1" style="color: #95444d;"></i>
+                    {{ applications|length }} заявок
+                </span>
+            </div>
             <div class="table-responsive">
-                <table class="table table-bordered">
-                    <thead>
+                <table class="table table-hover">
+                    <thead class="table-light">
                     <tr>
                         <th>№</th>
                         <th>ФИО</th>
@@ -81,27 +108,19 @@
                     <tbody>
                     {% for app in applications %}
                     <tr>
-                        <td>{{ forloop.counter }}</td>
+                        <td class="fw-bold" style="color: #95444d;">{{ forloop.counter }}</td>
                         <td>
                             {{ app.client.last_name }}
                             {{ app.client.first_name }}
                             {{ app.client.middle_name }}
                         </td>
                         <td>{{ app.client.phone_number }}</td>
-                        <td>{{ app.detail }}</td>
-                        <td>
-                            {{ app.delivery }}
-                        </td>
-                        <td>
-                            {{ app.payment_method }}
-                        </td>
-                        <td>
-                            {{ app.reservation }}
-                        </td>
-                        <td>
-                            {{ app.reservation_days }}
-                        </td>
-                        <td>{{ app.comment }}</td>
+                        <td>{{ app.detail|truncatechars:40 }}</td>
+                        <td>{{ app.delivery }}</td>
+                        <td>{{ app.payment_method }}</td>
+                        <td>{{ app.reservation }}</td>
+                        <td>{{ app.reservation_days }}</td>
+                        <td>{{ app.comment|truncatechars:30 }}</td>
                         <td>{{ app.created_at|date:"d.m.Y H:i" }}</td>
                         <td class="status-cell" data-application-id="{{ app.id }}">
                             <div class="status-badge status-{{ app.status }}"
@@ -120,10 +139,16 @@
             {% endif %}
 
             {% if tab == 'appointments' %}
-            <h4 class="mb-3">Записи на СТО</h4>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-bold mb-0" style="color: black;">Записи на СТО</h4>
+                <span class="badge bg-light text-dark px-3 py-2 rounded-pill">
+                    <i class="fas fa-calendar-check me-1" style="color: #95444d;"></i>
+                    {{ appointments|length }} записей
+                </span>
+            </div>
             <div class="table-responsive">
-                <table class="table table-bordered">
-                    <thead>
+                <table class="table table-hover">
+                    <thead class="table-light">
                     <tr>
                         <th>№</th>
                         <th>ФИО</th>
@@ -140,7 +165,7 @@
                     <tbody>
                     {% for app in appointments %}
                     <tr>
-                        <td>{{ forloop.counter }}</td>
+                        <td class="fw-bold" style="color: #95444d;">{{ forloop.counter }}</td>
                         <td>{{ app.client.last_name }} {{ app.client.first_name }}</td>
                         <td>{{ app.client.phone_number }}</td>
                         <td>{{ app.get_service_display }}</td>
@@ -148,7 +173,7 @@
                         <td>{{ app.time }}</td>
                         <td>{{ app.brand }}</td>
                         <td>{{ app.year }}</td>
-                        <td>{{ app.comment }}</td>
+                        <td>{{ app.comment|truncatechars:30 }}</td>
                         <td class="status-cell" data-appointment-id="{{ app.id }}">
                             <div class="status-badge status-{{ app.status }}"
                                  onclick="showAppointmentStatusMenu(event, {{ app.id }}, '{{ app.status }}')">
@@ -168,5 +193,6 @@
     </div>
 </div>
 
+<link rel="stylesheet" href="{% static 'css/admin_panel.css' %}">
 <script src="{% static 'js/admin_panel.js' %}"></script>
 {% endblock %}
