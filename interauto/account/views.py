@@ -16,8 +16,6 @@ from account import constants
 def profile(request):
     user = request.user
 
-    applications = user.applications.all().order_by('-created_at')
-
     if request.method == 'POST':
         form = ClientUpdateForm(request.POST, instance=user)
         if form.is_valid():
@@ -31,8 +29,7 @@ def profile(request):
     return render(request, 'account/profile.html', {
         'user': user,
         'form': form,
-        'edit_mode': edit_mode,
-        'applications': applications
+        'edit_mode': edit_mode
     })
 
 
@@ -63,6 +60,17 @@ def login_view(request):
     else:
         form = LoginForm()
     return render(request, 'account/login.html', {'form': form})
+
+
+@login_required(login_url='/account/login/')
+def my_applications(request):
+    user = request.user
+    applications = user.applications.all().order_by('-created_at')
+
+    return render(request, 'account/my_applications.html', {
+        'user': user,
+        'applications': applications
+    })
 
 
 @login_required(login_url='/account/login/')

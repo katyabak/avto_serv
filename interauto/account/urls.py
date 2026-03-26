@@ -13,6 +13,7 @@ urlpatterns = [
     path('application/success/', views.application_success, name='application_success'),
     path('application/<int:application_id>/update-status/', views.update_application_status,
          name='update_application_status'),
+    path('my_applications/', views.my_applications, name='my_applications'),
     path('appointment/', views.appointment, name='appointment'),
     path('appointment/success/', views.appointment_success, name='appointment_success'),
     path('appointment/busy-times/', views.get_busy_times, name='busy_times'),
