@@ -224,14 +224,20 @@ function showAppointmentStatusMenu(event, appointmentId, currentStatus) {
     const statuses = [
         { value: 'waiting', label: 'На рассмотрении', class: 'waiting' },
         { value: 'accepted', label: 'Принято', class: 'accepted' },
-        { value: 'canceled', label: 'Отменено', class: 'canceled' }
+        { value: 'delete', label: 'Удалить', class: 'delete' }
     ];
 
     statuses.forEach(status => {
         const option = document.createElement('div');
         option.className = `status-menu-item ${status.class}`;
         option.textContent = status.label;
-        option.onclick = () => updateAppointmentStatus(appointmentId, status.value);
+        option.onclick = () => {
+        if (status.value === 'delete') {
+        confirmDeleteAppointment(appointmentId);
+        } else {
+        updateAppointmentStatus(appointmentId, status.value);
+        }
+};
         menu.appendChild(option);
     });
 
@@ -250,6 +256,7 @@ function showAppointmentStatusMenu(event, appointmentId, currentStatus) {
 }
 
 function updateAppointmentStatus(appointmentId, newStatus) {
+    if (newStatus === 'delete') return;
     const cell = document.querySelector(`.status-cell[data-appointment-id="${appointmentId}"]`);
     if (!cell) return;
 
@@ -304,4 +311,73 @@ function updateAppointmentStatus(appointmentId, newStatus) {
         activeMenu.remove();
         activeMenu = null;
     }
+}
+
+function getAppointmentNumber(appointmentId) {
+    const cell = document.querySelector(
+        `.status-cell[data-appointment-id="${appointmentId}"]`
+    );
+
+    if (!cell) return appointmentId;
+
+    return cell.dataset.appointmentNumber || appointmentId;
+}
+
+function confirmDeleteAppointment(appointmentId) {
+    const confirmBox = document.createElement('div');
+    confirmBox.className = 'custom-confirm';
+    const number = getAppointmentNumber(appointmentId);
+
+    confirmBox.innerHTML = `
+    <div class="confirm-content">
+        <p>Вы хотите удалить запись №${number}?</p>
+        <div class="confirm-buttons">
+            <button id="confirm-yes" class="btn btn-danger">Да</button>
+            <button id="confirm-no" class="btn btn-secondary">Нет</button>
+        </div>
+    </div>
+`;
+
+    document.body.appendChild(confirmBox);
+
+    document.getElementById('confirm-yes').onclick = () => {
+        deleteAppointment(appointmentId);
+        confirmBox.remove();
+    };
+
+    document.getElementById('confirm-no').onclick = () => {
+        confirmBox.remove();
+    };
+    if (activeMenu) {
+    activeMenu.remove();
+    activeMenu = null;
+}
+}
+
+function deleteAppointment(appointmentId) {
+    const number = getAppointmentNumber(appointmentId);
+    fetch(`/account/appointment/${appointmentId}/delete/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // удаляем строку из таблицы
+            const row = document.querySelector(
+                `.status-cell[data-appointment-id="${appointmentId}"]`
+            ).closest('tr');
+
+            row.remove();
+
+            showNotification(`Запись №${number} удалена`, 'success');
+        } else {
+            showNotification(`Ошибка удаления записи №${number}`, 'error');
+        }
+    })
+    .catch(() => {
+        showNotification('Ошибка удаления', 'error');
+    });
 }

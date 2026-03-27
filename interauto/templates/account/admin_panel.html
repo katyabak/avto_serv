@@ -174,12 +174,13 @@
                         <td>{{ app.brand }}</td>
                         <td>{{ app.year }}</td>
                         <td>{{ app.comment|truncatechars:30 }}</td>
-                        <td class="status-cell" data-appointment-id="{{ app.id }}">
+                        <td class="status-cell"
+                            data-appointment-id="{{ app.id }}"
+                            data-appointment-number="{{ forloop.counter }}">
                             <div class="status-badge status-{{ app.status }}"
                                  onclick="showAppointmentStatusMenu(event, {{ app.id }}, '{{ app.status }}')">
                                 {% if app.status == 'waiting' %}На рассмотрении
                                 {% elif app.status == 'accepted' %}Принято
-                                {% elif app.status == 'canceled' %}Отменено
                                 {% else %}{{ app.status }}{% endif %}
                             </div>
                         </td>

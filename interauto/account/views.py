@@ -208,8 +208,7 @@ def get_busy_times(request):
     date = request.GET.get('date')
 
     busy_times = Appointment.objects.filter(
-        date=date,
-        status='accepted'
+        date=date
     ).values_list('time', flat=True)
 
     # переводим время в строку
@@ -229,7 +228,7 @@ def update_appointment_status(request, appointment_id):
         data = json.loads(request.body)
         new_status = data.get('status')
 
-        valid_statuses = ['waiting', 'accepted', 'canceled']
+        valid_statuses = ['waiting', 'accepted']
         if new_status not in valid_statuses:
             return JsonResponse({'error': 'Недопустимый статус'}, status=400)
 
@@ -250,6 +249,18 @@ def update_appointment_status(request, appointment_id):
         return JsonResponse({'error': 'Неверный формат данных'}, status=400)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+
+@login_required
+@require_POST
+def delete_appointment(request, appointment_id):
+    if not request.user.is_staff:
+        return JsonResponse({'error': 'Доступ запрещен'}, status=403)
+
+    appointment = get_object_or_404(Appointment, id=appointment_id)
+    appointment.delete()
+
+    return JsonResponse({'success': True})
 
 
 @login_required(login_url='/account/login/')

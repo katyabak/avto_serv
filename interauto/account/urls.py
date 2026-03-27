@@ -19,6 +19,7 @@ urlpatterns = [
     path('appointment/busy-times/', views.get_busy_times, name='busy_times'),
     path('appointment/<int:appointment_id>/update-status/', views.update_appointment_status,
          name='update_appointment_status'),
+    path('appointment/<int:appointment_id>/delete/', views.delete_appointment, name='delete_appointment'),
 
     # Сброс пароля — ввод email
     path('password_reset/', auth_views.PasswordResetView.as_view(
