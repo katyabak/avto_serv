@@ -1,46 +1,87 @@
 {% extends "base.html" %}
 {% block content %}
 {% load form_tags %}
-<div class="container py-5" style="max-width: 400px;">
-    <h2 class="fw-bold mb-4 text-center">Вход</h2>
-    {% if error %}
-    <div class="alert alert-danger">{{ error }}</div>
-    {% endif %}
-    <form method="POST">
-        {% csrf_token %}
-        {% for field in form %}
-        <div class="mb-3 position-relative">
-            {{ field.label_tag }}
-            {% if field.name == 'password' %}
-            <input type="password" name="{{ field.html_name }}" id="password-field" class="form-control"/>
-            <button type="button" id="toggle-password" class="btn btn-sm btn-outline-secondary mt-1">Показать пароль
-            </button>
-            {% else %}
-            {{ field|add_class:"form-control" }}
-            {% endif %}
-            {% if field.errors %}
-            <div class="text-danger">{{ field.errors }}</div>
-            {% endif %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-6 col-lg-5">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-header bg-white border-0 pt-4 pb-0">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="p-3 rounded-3" style="background: white;">
+                            <i class="fas fa-sign-in-alt fs-1" style="color: #95444d;"></i>
+                        </div>
+                        <div>
+                            <h4 class="fw-bold mb-1" style="color: #243642;">Вход в аккаунт</h4>
+                            <p class="text-muted mb-0">Войдите в свой профиль</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    {% if error %}
+                    <div class="alert alert-danger rounded-3 mb-4">
+                        <i class="fas fa-exclamation-circle me-2"></i> {{ error }}
+                    </div>
+                    {% endif %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        {% for field in form %}
+                        <div class="mb-3">
+                            {{ field.label_tag }}
+                            {% if field.name == 'password' %}
+                            <div class="position-relative">
+                                <input type="password" name="{{ field.html_name }}" id="password-field"
+                                       class="form-control rounded-3 py-2" style="padding-right: 45px;"/>
+                                <button type="button" id="toggle-password"
+                                        class="btn btn-link position-absolute end-0 top-0 mt-2 me-2 text-decoration-none"
+                                        style="color: #95444d;">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            {% else %}
+                            {{ field|add_class:"form-control rounded-3 py-2" }}
+                            {% endif %}
+                            {% if field.errors %}
+                            <div class="text-danger small mt-1">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn py-3 rounded-3 fw-bold"
+                                    style="background: #95444d; color: white; border: none;">
+                                <i class="fas fa-sign-in-alt me-2"></i>Войти
+                            </button>
+                        </div>
+                    </form>
+                    <div class="text-center mt-4">
+                        <p class="text-muted mb-0">Нет аккаунта?
+                            <a href="/account/register/" class="text-decoration-none fw-semibold"
+                               style="color: #95444d;">
+                                Зарегистрироваться
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
-        {% endfor %}
-        <button type="submit" class="btn w-100" style="background-color: #334B5B; color: #ffffff;">Войти</button>
-    </form>
-    <p class="mt-3 text-center">Нет аккаунта? <a href="/account/register/">Зарегистрироваться</a></p>
+    </div>
 </div>
 
 <script>
   const toggleBtn = document.getElementById('toggle-password');
   const passwordField = document.getElementById('password-field');
+  let isPasswordVisible = false;
 
   toggleBtn.addEventListener('click', () => {
     if (passwordField.type === 'password') {
       passwordField.type = 'text';
-      toggleBtn.textContent = 'Скрыть пароль';
+      toggleBtn.innerHTML = '<i class="fas fa-eye-slash"></i>';
     } else {
       passwordField.type = 'password';
-      toggleBtn.textContent = 'Показать пароль';
+      toggleBtn.innerHTML = '<i class="fas fa-eye"></i>';
     }
   });
+
 
 </script>
 {% endblock %}
