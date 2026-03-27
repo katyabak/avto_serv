@@ -10,17 +10,17 @@
 
 /* Цвет акцента */
 .text-accent {
-    color: #B52837;
+    color: #95444d;
 }
 
 .bg-accent {
-    background-color: #B52837;
+    background-color: #95444d;
 }
 
 /* Стили для иконок */
 .benefits-icon {
     font-size: 3rem;
-    color: #B52837;
+    color: #95444d;
 }
 
 /* Стили для карточек "Почему выбирают нас" */
