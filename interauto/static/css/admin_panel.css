@@ -15,6 +15,7 @@
     background-color: rgba(149,68,77,0.05);
 }
 
+/* Стили для подтверждения удаления */
 .custom-confirm {
     position: fixed;
     top: 0;
@@ -40,4 +41,35 @@
     display: flex;
     gap: 10px;
     justify-content: center;
+}
+
+/* Стили для таблицы заявок */
+.detail-cell {
+    min-width: 250px;
+    max-width: 400px;
+    word-wrap: break-word;
+    white-space: normal;
+    word-break: break-word;
+}
+
+.col-detail {
+    min-width: 250px;
+}
+
+/* Общие стили для всех таблиц */
+.table-responsive table {
+    min-width: 100%;
+}
+
+.table-responsive td,
+.table-responsive th {
+    vertical-align: middle;
+    word-wrap: break-word;
+}
+
+/* Для длинного текста в других ячейках */
+.table-responsive td {
+    max-width: 300px;
+    word-wrap: break-word;
+    white-space: normal;
 }
