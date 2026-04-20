@@ -39,7 +39,7 @@
             <!-- Форма -->
             <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
                 <div class="card-body p-4 p-lg-5">
-                    <form method="post">
+                    <form method="post" id="application-form">
                         {% csrf_token %}
 
                         <!-- Информация о клиенте -->
@@ -89,7 +89,7 @@
                                            name="delivery"
                                            class="form-control rounded-3 py-2"
                                            placeholder="Выберите способ доставки..."
-                                           readonly
+                                           autocomplete="off"
                                            required>
                                     <div id="delivery-dropdown" class="custom-dropdown"></div>
                                 </div>
@@ -103,7 +103,7 @@
                                            name="payment_method"
                                            class="form-control rounded-3 py-2"
                                            placeholder="Выберите способ оплаты..."
-                                           readonly
+                                           autocomplete="off"
                                            required>
                                     <div id="payment-method-dropdown" class="custom-dropdown"></div>
                                 </div>
@@ -118,7 +118,7 @@
                                            name="reservation"
                                            class="form-control rounded-3 py-2"
                                            placeholder="Выберите резервирование..."
-                                           readonly
+                                           autocomplete="off"
                                            required>
                                     <div id="reservation-dropdown" class="custom-dropdown"></div>
                                 </div>
@@ -133,7 +133,7 @@
                                            name="reservation_days"
                                            class="form-control rounded-3 py-2"
                                            placeholder="Выберите количество дней..."
-                                           readonly>
+                                           autocomplete="off">
                                     <div id="reservation-days-dropdown" class="custom-dropdown"></div>
                                 </div>
                             </div>
@@ -166,19 +166,23 @@
 document.addEventListener("DOMContentLoaded", function () {
     const reservationField = document.getElementById("reservation-input");
     const daysBlock = document.getElementById("reservation-days-block");
+    const daysInput = document.getElementById("reservation-days-input");
 
     function toggleDays() {
         if (reservationField.value === "Да") {
             daysBlock.style.display = "block";
+            daysInput.required = true;
         } else {
             daysBlock.style.display = "none";
+            daysInput.required = false;
+            if (daysInput) {
+                daysInput.value = "";
+            }
         }
     }
-    const daysInput = document.getElementById("reservation-days-input");
-        if (daysInput) {
-            daysInput.value = "";
-        }
+
     reservationField.addEventListener("change", toggleDays);
+    reservationField.addEventListener("input", toggleDays);
     toggleDays();
 });
 
@@ -186,6 +190,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 </script>
+
 <script>
     window.detailList = {{ detail_choices|safe }};
     window.deliveryList = {{ delivery_choices|safe }};
@@ -193,10 +198,8 @@ document.addEventListener("DOMContentLoaded", function () {
     window.reservationList = {{ reservation_choices|safe }};
     window.reservationDaysList = {{ reservation_days_choices|safe }};
 
-
-
-
 </script>
+
 <link rel="stylesheet" href="{% static 'css/custom.css' %}">
 <script src="{% static 'js/application.js' %}"></script>
 {% endblock %}

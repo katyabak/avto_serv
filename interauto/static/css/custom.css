@@ -238,7 +238,7 @@
     background: white;
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    max-height: 200px;
+    max-height: 250px;
     overflow-y: auto;
     z-index: 1000;
     margin-top: 5px;
@@ -267,6 +267,19 @@
 .custom-dropdown .custom-item.active {
     background: #95444d;
     color: white;
+}
+
+/* Убираем серую подсветку для полей с readonly */
+.form-control[readonly] {
+    background-color: #ffffff !important;
+    cursor: pointer;
+}
+
+.form-control[readonly]:focus {
+    background-color: #ffffff !important;
+    border-color: #dee2e6;
+    box-shadow: none;
+    outline: none;
 }
 
 /* Хлебные крошки */

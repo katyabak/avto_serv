@@ -5,7 +5,7 @@ from .constants import CAR_BRANDS, SERVICE_CHOICE
 from .forms import RegisterForm, LoginForm, ClientUpdateForm, AppointmentForm
 from django.contrib.auth.decorators import login_required
 from .forms import ApplicationForm
-from .models import Client, ClientApplication, Appointment
+from .models import Client, ClientApplication, Appointment, Part
 from django.http import Http404, JsonResponse
 from django.views.decorators.http import require_POST
 import json
@@ -102,8 +102,9 @@ def admin_panel(request):
 @login_required(login_url='/account/login/')
 def application(request):
     user = request.user
-    # Преобразуем списки в формат для JS
-    detail_choices = [choice[0] for choice in constants.DETAIL_CHOICES]
+
+    # Получаем все запчасти из БД
+    detail_choices = list(Part.objects.values_list('name', flat=True))
     delivery_choices = constants.DELIVERY_CHOICES
     payment_choices = constants.PAYMENT_CHOICES
     reservation_choices = [choice for choice in constants.RESERVATION_CHOICES]

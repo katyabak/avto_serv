@@ -121,3 +121,21 @@ class Appointment(models.Model):
 
     def __str__(self):
         return f'Запись {self.id}'
+
+
+class Part(models.Model):
+    """
+    Модель для хранения уникальных наименований запчастей.
+    """
+    name = models.CharField(
+        max_length=500,
+        unique=True,
+        db_index=True             # ускоряет поиск по названию
+    )
+
+    class Meta:
+        db_table = 'parts'
+        ordering = ['name']         # Сортировка по алфавиту по умолчанию
+
+    def __str__(self):
+        return self.name

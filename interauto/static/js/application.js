@@ -1,7 +1,7 @@
 // ============================================
-// Кастомный дропдаун с поиском
+// Кастомный дропдаун с поиском (после 3 символов)
 // ============================================
-function initCustomDropdown(fieldId, items, enableSearch = true) {
+function initCustomDropdown(fieldId, items, enableSearch = true, minChars = 0) {
     const input = document.getElementById(fieldId + "-input");
     const dropdown = document.getElementById(fieldId + "-dropdown");
     let currentFocus = -1;
@@ -52,30 +52,35 @@ function initCustomDropdown(fieldId, items, enableSearch = true) {
     // Обработчик ввода текста (поиск)
     input.addEventListener("input", () => {
         const value = input.value.trim();
-        if (!value && !enableSearch) {
-            // Если поиск отключен и поле пустое, показываем все
-            renderDropdown(items.slice(0, 50));
-        } else if (enableSearch) {
-            // Если поиск включен, фильтруем
+
+        if (!enableSearch) {
+            // Если поиск отключен, показываем все (БЕЗ ОГРАНИЧЕНИЙ)
+            renderDropdown(items);
+        } else {
+            // Если поиск включен
+            if (value.length < minChars) {
+                // Если введено меньше minChars символов, скрываем список
+                dropdown.classList.add("d-none");
+                return;
+            }
+            // Фильтруем результаты (БЕЗ ОГРАНИЧЕНИЙ - показываем ВСЕ совпадения)
             const filtered = items.filter(i =>
                 i.toLowerCase().includes(value.toLowerCase())
-            ).slice(0, 50);
+            );
             renderDropdown(filtered);
-        } else {
-            // Если поиск отключен, показываем все при любом вводе
-            renderDropdown(items.slice(0, 50));
         }
     });
 
-    // Обработчик клика - показываем список
-    input.addEventListener("click", () => {
-        renderDropdown(items.slice(0, 50));
-    });
+    // Обработчик клика - показываем список только если поиск отключен
+    if (!enableSearch) {
+        input.addEventListener("click", () => {
+            renderDropdown(items);
+        });
 
-    // Обработчик фокуса - тоже показываем список
-    input.addEventListener("focus", () => {
-        renderDropdown(items.slice(0, 50));
-    });
+        input.addEventListener("focus", () => {
+            renderDropdown(items);
+        });
+    }
 
     // Обработчик клавиатуры
     input.addEventListener("keydown", (e) => {
@@ -117,11 +122,15 @@ function initCustomDropdown(fieldId, items, enableSearch = true) {
 // Инициализация всех полей
 // ============================================
 document.addEventListener("DOMContentLoaded", () => {
-    // включаем поиск (enableSearch = true)
-    initCustomDropdown("detail", window.detailList || [], true);
-    initCustomDropdown("delivery", window.deliveryList || [], false);
-    initCustomDropdown("payment-method", window.paymentList || [], false);
-    initCustomDropdown("reservation", window.reservationList || [], false);
-    initCustomDropdown("reservation-days", window.reservationDaysList || [], false);
-});
+    // Для запчастей: поиск включен, список появляется после ввода 3 символов, ВСЕ результаты
+    initCustomDropdown("detail", window.detailList || [], true, 3);
 
+    // Для остальных полей: поиск отключен, список показывается при клике, все результаты
+    initCustomDropdown("delivery", window.deliveryList || [], false, 0);
+    initCustomDropdown("payment-method", window.paymentList || [], false, 0);
+    initCustomDropdown("reservation", window.reservationList || [], false, 0);
+    initCustomDropdown("reservation-days", window.reservationDaysList || [], false, 0);
+
+    // Инициализация логики отображения дней резервирования
+    initReservationDaysToggle();
+});
