@@ -361,3 +361,46 @@
         }
     });
 })();
+
+// ============================================
+// Валидация даты и времени перед отправкой
+// ============================================
+(function() {
+    const form = document.getElementById("appointment-form");
+    const dateInput = document.getElementById("id_date");
+    const timeInput = document.getElementById("selected-time");
+    const errorBlock = document.getElementById("datetime-error");
+
+    form.addEventListener("submit", function(e) {
+        const dateValue = dateInput.value.trim();
+        const timeValue = timeInput.value.trim();
+
+        if (!dateValue || !timeValue) {
+            e.preventDefault();
+            errorBlock.style.display = "block";
+
+            if (!dateValue) {
+                dateInput.classList.add("is-invalid");
+            }
+
+            return;
+        }
+
+        errorBlock.style.display = "none";
+        dateInput.classList.remove("is-invalid");
+    });
+
+    dateInput.addEventListener("change", () => {
+        if (dateInput.value && timeInput.value) {
+            errorBlock.style.display = "none";
+            dateInput.classList.remove("is-invalid");
+        }
+    });
+
+    timeInput.addEventListener("change", () => {
+        if (dateInput.value && timeInput.value) {
+            errorBlock.style.display = "none";
+            dateInput.classList.remove("is-invalid");
+        }
+    });
+})();

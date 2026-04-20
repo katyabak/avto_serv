@@ -27,7 +27,7 @@
             {% endif %}
             <!-- Заголовок с иконкой -->
             <div class="d-flex align-items-center gap-3 mb-4">
-                <div class=" p-3 rounded-3" style="background: transparent;">
+                <div class="p-3 rounded-3" style="background: transparent;">
                     <i class="fas fa-car-alt fs-1" style="color: #95444d;"></i>
                 </div>
                 <div>
@@ -39,7 +39,7 @@
             <!-- Форма -->
             <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
                 <div class="card-body p-4 p-lg-5">
-                    <form method="post">
+                    <form method="post" id="appointment-form">
                         {% csrf_token %}
 
                         <!-- Информация о клиенте -->
@@ -49,10 +49,15 @@
                                     <i class="fas fa-user fs-4" style="color: #95444d;"></i>
                                     <div>
                                         <small class="text-muted d-block">ФИО</small>
-                                        <span class="fw-semibold">{{ user.last_name|default:"—" }} {{ user.first_name|default:"—" }} {{ user.middle_name|default:"—" }}</span>
+                                        <span class="fw-semibold">
+                                            {{ user.last_name|default:"—" }}
+                                            {{ user.first_name|default:"—" }}
+                                            {{ user.middle_name|default:"—" }}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-sm-6">
                                 <div class="d-flex align-items-center gap-3 p-3 bg-light rounded-3">
                                     <i class="fas fa-phone fs-4" style="color: #95444d;"></i>
@@ -65,6 +70,7 @@
                         </div>
 
                         <div class="row g-4">
+
                             <div class="col-12">
                                 <label class="form-label fw-semibold">Услуга</label>
                                 <div class="position-relative">
@@ -73,7 +79,7 @@
                                            name="service"
                                            class="form-control rounded-3 py-2"
                                            placeholder="Выберите услугу"
-                                           readonly
+                                           autocomplete="off"
                                            required>
                                     <div id="service-dropdown" class="brand-dropdown d-none"></div>
                                 </div>
@@ -94,6 +100,15 @@
                                     </div>
                                 </div>
                                 <input type="hidden" name="time" id="selected-time">
+                            </div>
+
+                            <!-- ошибка -->
+                            <div class="col-12">
+                                <div id="datetime-error"
+                                     class="text-danger mt-1"
+                                     style="display:none; font-size:14px;">
+                                    Пожалуйста, выберите дату и время записи
+                                </div>
                             </div>
 
                             <div class="col-md-6 position-relative">
@@ -154,6 +169,10 @@
     window.servicesList = {{ service|safe }};
 
 
+
+
+
 </script>
 <script src="{% static 'js/appointment.js' %}"></script>
+
 {% endblock %}
