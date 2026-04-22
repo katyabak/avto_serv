@@ -14,7 +14,13 @@ class ClientApplication(models.Model):
         ('accepted', 'Принят'),
         ('canceled', 'Отменено'),
     ]
-    detail = models.CharField(max_length=100)
+    detail = models.ForeignKey(
+        'Part',
+        on_delete=models.SET_NULL,  # если деталь удалят, в заявке останется NULL
+        null=True,
+        blank=True,
+        related_name='applications'
+    )
     comment = models.CharField(max_length=100, blank=True)
 
     delivery = models.CharField(max_length=20, default='delivery')

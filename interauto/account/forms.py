@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.forms import SetPasswordForm
-from .models import Client, Appointment
+from .models import Client, Appointment, Part
 from .models import ClientApplication
 import datetime
 
@@ -74,7 +74,7 @@ class CustomSetPasswordForm(SetPasswordForm):
 
 
 class ApplicationForm(forms.ModelForm):
-    detail = forms.CharField(required=True)
+    detail = forms.IntegerField(required=True)
 
     delivery = forms.CharField(
         required=True
@@ -111,6 +111,16 @@ class ApplicationForm(forms.ModelForm):
             'reservation_days',
             'comment'
         ]
+
+    def clean_detail(self):
+        detail_id = self.cleaned_data.get('detail')
+
+        try:
+            part = Part.objects.get(id=detail_id)
+        except Part.DoesNotExist:
+            raise forms.ValidationError("Выберите запчасть из списка")
+
+        return part
 
     def clean(self):
         cleaned_data = super().clean()

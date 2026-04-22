@@ -4,6 +4,12 @@
 function initCustomDropdown(fieldId, items, enableSearch = true, minChars = 0) {
     const input = document.getElementById(fieldId + "-input");
     const dropdown = document.getElementById(fieldId + "-dropdown");
+
+    // hidden input нужен только для detail
+    const hiddenInput = fieldId === "detail"
+        ? document.getElementById("detail-id")
+        : null;
+
     let currentFocus = -1;
     let currentItems = [];
 
@@ -23,7 +29,11 @@ function initCustomDropdown(fieldId, items, enableSearch = true, minChars = 0) {
         filteredItems.forEach((item, index) => {
             const div = document.createElement("div");
             div.className = "custom-item";
-            div.textContent = item;
+
+            // для detail item = объект {id, name}
+            // для остальных item = строка
+            div.textContent = fieldId === "detail" ? item.name : item;
+
             div.onclick = () => selectItem(index);
             dropdown.appendChild(div);
         });
@@ -32,17 +42,31 @@ function initCustomDropdown(fieldId, items, enableSearch = true, minChars = 0) {
     }
 
     function setActive(index) {
-        const items = dropdown.querySelectorAll(".custom-item");
-        items.forEach(item => item.classList.remove("active"));
-        if (index >= 0 && index < items.length) {
-            items[index].classList.add("active");
-            items[index].scrollIntoView({ block: "nearest" });
+        const itemsDom = dropdown.querySelectorAll(".custom-item");
+        itemsDom.forEach(item => item.classList.remove("active"));
+
+        if (index >= 0 && index < itemsDom.length) {
+            itemsDom[index].classList.add("active");
+            itemsDom[index].scrollIntoView({ block: "nearest" });
         }
     }
 
     function selectItem(index) {
         if (index >= 0 && index < currentItems.length) {
-            input.value = currentItems[index];
+            const selectedItem = currentItems[index];
+
+            if (fieldId === "detail") {
+                // показываем название пользователю
+                input.value = selectedItem.name;
+
+                // сохраняем id в hidden input
+                if (hiddenInput) {
+                    hiddenInput.value = selectedItem.id;
+                }
+            } else {
+                input.value = selectedItem;
+            }
+
             input.dispatchEvent(new Event("change", { bubbles: true }));
         }
         dropdown.classList.add("d-none");
@@ -52,6 +76,11 @@ function initCustomDropdown(fieldId, items, enableSearch = true, minChars = 0) {
     // Обработчик ввода текста (поиск)
     input.addEventListener("input", () => {
         const value = input.value.trim();
+
+        // если detail — очищаем hidden id при ручном вводе
+        if (fieldId === "detail" && hiddenInput) {
+            hiddenInput.value = "";
+        }
 
         if (!enableSearch) {
             // Если поиск отключен, показываем все (БЕЗ ОГРАНИЧЕНИЙ)
@@ -63,10 +92,19 @@ function initCustomDropdown(fieldId, items, enableSearch = true, minChars = 0) {
                 dropdown.classList.add("d-none");
                 return;
             }
-            // Фильтруем результаты (БЕЗ ОГРАНИЧЕНИЙ - показываем ВСЕ совпадения)
-            const filtered = items.filter(i =>
-                i.toLowerCase().includes(value.toLowerCase())
-            );
+
+            let filtered;
+
+            if (fieldId === "detail") {
+                filtered = items.filter(i =>
+                    i.name.toLowerCase().includes(value.toLowerCase())
+                );
+            } else {
+                filtered = items.filter(i =>
+                    i.toLowerCase().includes(value.toLowerCase())
+                );
+            }
+
             renderDropdown(filtered);
         }
     });
@@ -122,7 +160,7 @@ function initCustomDropdown(fieldId, items, enableSearch = true, minChars = 0) {
 // Инициализация всех полей
 // ============================================
 document.addEventListener("DOMContentLoaded", () => {
-    // Для запчастей: поиск включен, список появляется после ввода 3 символов, ВСЕ результаты
+    // Для запчастей: поиск включен, список появляется после ввода 3 символов
     initCustomDropdown("detail", window.detailList || [], true, 3);
 
     // Для остальных полей: поиск отключен, список показывается при клике, все результаты
@@ -130,7 +168,4 @@ document.addEventListener("DOMContentLoaded", () => {
     initCustomDropdown("payment-method", window.paymentList || [], false, 0);
     initCustomDropdown("reservation", window.reservationList || [], false, 0);
     initCustomDropdown("reservation-days", window.reservationDaysList || [], false, 0);
-
-    // Инициализация логики отображения дней резервирования
-    initReservationDaysToggle();
 });

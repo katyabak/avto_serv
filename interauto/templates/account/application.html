@@ -69,13 +69,19 @@
                             <div class="col-12">
                                 <div class="position-relative">
                                     <label class="form-label fw-semibold">Запчасть:</label>
+
                                     <input type="text"
                                            id="detail-input"
-                                           name="detail"
                                            class="form-control rounded-3 py-2"
                                            placeholder="Введите название запчасти..."
                                            autocomplete="off"
                                            required>
+
+                                    <input type="hidden"
+                                           id="detail-id"
+                                           name="detail"
+                                           required>
+
                                     <div id="detail-dropdown" class="custom-dropdown d-none"></div>
                                 </div>
                             </div>

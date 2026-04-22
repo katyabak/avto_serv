@@ -104,7 +104,9 @@ def application(request):
     user = request.user
 
     # Получаем все запчасти из БД
-    detail_choices = list(Part.objects.values_list('name', flat=True))
+    detail_choices = list(
+        Part.objects.values('id', 'name')
+    )
     delivery_choices = constants.DELIVERY_CHOICES
     payment_choices = constants.PAYMENT_CHOICES
     reservation_choices = [choice for choice in constants.RESERVATION_CHOICES]
