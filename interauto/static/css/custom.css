@@ -291,3 +291,55 @@
 .breadcrumb-item a:hover {
     color: #b85c66 !important;
 }
+
+/* Стили для поля запчасти с иконкой поиска */
+#detail-input {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%2395444d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 18px;
+    padding-right: 40px !important;
+    cursor: text;
+    transition: all 0.3s ease;
+}
+
+#detail-input:hover {
+    border-color: #95444d;
+    transform: translateY(-1px);
+}
+
+#detail-input:focus {
+    border-color: #95444d;
+    box-shadow: 0 0 0 0.2rem rgba(149, 68, 77, 0.25);
+}
+
+/* Общие стили для полей с выпадающим списком (dropdown) */
+#delivery-input,
+#payment-method-input,
+#reservation-input,
+#reservation-days-input {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%2395444d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 18px;
+    padding-right: 40px !important;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#delivery-input:hover,
+#payment-method-input:hover,
+#reservation-input:hover,
+#reservation-days-input:hover {
+    border-color: #95444d;
+    transform: translateY(-1px);
+}
+
+#delivery-input:focus,
+#payment-method-input:focus,
+#reservation-input:focus,
+#reservation-days-input:focus {
+    border-color: #95444d;
+    box-shadow: 0 0 0 0.2rem rgba(149, 68, 77, 0.25);
+    outline: none;
+}

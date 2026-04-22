@@ -272,3 +272,32 @@
     background: #95444d;
     color: white;
 }
+/* ============================================
+   Общий стиль для всех полей с выпадающим списком
+   ============================================ */
+#service-input,
+#brand-input,
+#id_year {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%2395444d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 18px;
+    padding-right: 40px !important;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#service-input:hover,
+#brand-input:hover,
+#id_year:hover {
+    border-color: #95444d;
+    transform: translateY(-1px);
+}
+
+#service-input:focus,
+#brand-input:focus,
+#id_year:focus {
+    border-color: #95444d;
+    box-shadow: 0 0 0 0.2rem rgba(149,68,77,0.25);
+    outline: none;
+}

@@ -87,9 +87,13 @@
 
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold">Дата</label>
-                                <input type="date" name="{{ form.date.name }}" id="{{ form.date.id_for_label }}"
+                                <input type="text"
+                                       name="{{ form.date.name }}"
+                                       id="{{ form.date.id_for_label }}"
                                        class="form-control rounded-3 py-2 datepicker-input"
-                                       placeholder="Выберите дату" required>
+                                       placeholder="Выберите дату"
+                                       autocomplete="off"
+                                       required>
                             </div>
 
                             <div class="col-md-6">
@@ -157,7 +161,6 @@
 </div>
 
 <!-- Подключаем внешние библиотеки -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
 
