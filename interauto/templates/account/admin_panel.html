@@ -19,8 +19,6 @@
         </ol>
     </nav>
 
-    <!--    <h2 class="fw-bold mb-4 text-center">Админ-панель</h2>-->
-
     <div class="row">
         <!-- ЛЕВОЕ МЕНЮ -->
         <div class="col-12 col-md-3 mb-4 mb-md-0">
@@ -38,7 +36,6 @@
                         class="btn w-100 mb-2 {% if tab == 'appointments' %}active-tab{% else %}inactive-tab{% endif %}">
                     <i class="fas fa-calendar-check me-2"></i>Записи на СТО
                 </button>
-
             </div>
         </div>
 
@@ -49,30 +46,30 @@
                 <h4 class="fw-bold mb-0" style="color: black;">Список клиентов</h4>
                 <span class="badge bg-light text-dark px-3 py-2 rounded-pill">
                     <i class="fas fa-users me-1" style="color: #95444d;"></i>
-                    {{ clients|length }} клиента
+                    <span id="clients-count">{{ clients|length }}</span> клиентов
                 </span>
             </div>
+            <!-- Поле поиска -->
+            <div class="mb-3">
+                <input type="text" id="search-clients" class="form-control rounded-3 py-2" placeholder="🔍 Поиск по ФИО, email или телефону...">
+            </div>
             <div class="table-responsive">
-                <table class="table table-hover table-bordered">
+                <table class="table table-hover table-bordered" id="clients-table">
                     <thead class="table-light">
-                    <tr>
-                        <th>№</th>
-                        <th>Email</th>
-                        <th>ФИО</th>
-                        <th>Телефон</th>
-                    </tr>
+                        <tr>
+                            <th>№</th>
+                            <th>Email</th>
+                            <th>ФИО</th>
+                            <th>Телефон</th>
+                        </tr>
                     </thead>
                     <tbody>
                     {% for client in clients %}
-                    <tr>
+                    <tr class="client-row">
                         <td class="fw-bold" style="color: #95444d;">{{ forloop.counter }}</td>
-                        <td>{{ client.email }}</td>
-                        <td>
-                            {{ client.last_name }}
-                            {{ client.first_name }}
-                            {{ client.middle_name }}
-                        </td>
-                        <td>{{ client.phone_number }}</td>
+                        <td class="client-email">{{ client.email }}</td>
+                        <td class="client-fullname">{{ client.last_name }} {{ client.first_name }} {{ client.middle_name }}</td>
+                        <td class="client-phone">{{ client.phone_number }}</td>
                     </tr>
                     {% endfor %}
                     </tbody>
@@ -85,43 +82,43 @@
                 <h4 class="fw-bold mb-0" style="color: black;">Заявки клиентов</h4>
                 <span class="badge bg-light text-dark px-3 py-2 rounded-pill">
                     <i class="fas fa-clipboard-list me-1" style="color: #95444d;"></i>
-                    {{ applications|length }} заявок
+                    <span id="applications-count">{{ applications|length }}</span> заявок
                 </span>
             </div>
+            <!-- Поле поиска -->
+            <div class="mb-3">
+                <input type="text" id="search-applications" class="form-control rounded-3 py-2" placeholder="🔍 Поиск по ФИО, телефону, запчасти, доставке, оплате...">
+            </div>
             <div class="table-responsive">
-                <table class="table table-hover table-bordered">
+                <table class="table table-hover table-bordered" id="applications-table">
                     <thead class="table-light">
-                    <tr>
-                        <th>№</th>
-                        <th>ФИО</th>
-                        <th>Телефон</th>
-                        <th class="col-detail">Запчасть</th>
-                        <th>Доставка</th>
-                        <th>Способ оплаты</th>
-                        <th>Резерв</th>
-                        <th>Кол-во дней</th>
-                        <th>Комментарий</th>
-                        <th>Дата</th>
-                        <th>Статус</th>
-                    </tr>
+                        <tr>
+                            <th>№</th>
+                            <th>ФИО</th>
+                            <th>Телефон</th>
+                            <th class="col-detail">Запчасть</th>
+                            <th>Доставка</th>
+                            <th>Способ оплаты</th>
+                            <th>Резерв</th>
+                            <th>Кол-во дней</th>
+                            <th>Комментарий</th>
+                            <th>Дата</th>
+                            <th>Статус</th>
+                        </tr>
                     </thead>
                     <tbody>
                     {% for app in applications %}
-                    <tr>
+                    <tr class="application-row">
                         <td class="fw-bold" style="color: #95444d;">{{ forloop.counter }}</td>
-                        <td>
-                            {{ app.client.last_name }}
-                            {{ app.client.first_name }}
-                            {{ app.client.middle_name }}
-                        </td>
-                        <td>{{ app.client.phone_number }}</td>
-                        <td class="detail-cell">{{ app.detail }}</td>
-                        <td>{{ app.delivery }}</td>
-                        <td>{{ app.payment_method }}</td>
-                        <td>{{ app.reservation }}</td>
-                        <td>{{ app.reservation_days }}</td>
-                        <td>{{ app.comment }}</td>
-                        <td>{{ app.created_at|date:"d.m.Y H:i" }}</td>
+                        <td class="app-fio">{{ app.client.last_name }} {{ app.client.first_name }} {{ app.client.middle_name }}</td>
+                        <td class="app-phone">{{ app.client.phone_number }}</td>
+                        <td class="app-detail">{{ app.detail.name|default:"—" }}</td>
+                        <td class="app-delivery">{{ app.delivery }}</td>
+                        <td class="app-payment">{{ app.payment_method }}</td>
+                        <td class="app-reservation">{{ app.reservation }}</td>
+                        <td class="app-days">{{ app.reservation_days|default:"—" }}</td>
+                        <td class="app-comment">{{ app.comment|default:"—" }}</td>
+                        <td class="app-date">{{ app.created_at|date:"d.m.Y H:i" }}</td>
                         <td class="status-cell" data-application-id="{{ app.id }}">
                             <div class="status-badge status-{{ app.status }}"
                                  onclick="showStatusMenu(event, {{ app.id }}, '{{ app.status }}')">
@@ -143,37 +140,41 @@
                 <h4 class="fw-bold mb-0" style="color: black;">Записи на СТО</h4>
                 <span class="badge bg-light text-dark px-3 py-2 rounded-pill">
                     <i class="fas fa-calendar-check me-1" style="color: #95444d;"></i>
-                    {{ appointments|length }} записей
+                    <span id="appointments-count">{{ appointments|length }}</span> записей
                 </span>
             </div>
+            <!-- Поле поиска -->
+            <div class="mb-3">
+                <input type="text" id="search-appointments" class="form-control rounded-3 py-2" placeholder="🔍 Поиск по ФИО, телефону, услуге, бренду...">
+            </div>
             <div class="table-responsive">
-                <table class="table table-hover table-bordered">
+                <table class="table table-hover table-bordered" id="appointments-table">
                     <thead class="table-light">
-                    <tr>
-                        <th>№</th>
-                        <th>ФИО</th>
-                        <th>Телефон</th>
-                        <th>Услуга</th>
-                        <th>Дата</th>
-                        <th>Время</th>
-                        <th>Бренд</th>
-                        <th>Год</th>
-                        <th>Комментарий</th>
-                        <th>Статус</th>
-                    </tr>
+                        <tr>
+                            <th>№</th>
+                            <th>ФИО</th>
+                            <th>Телефон</th>
+                            <th>Услуга</th>
+                            <th>Дата</th>
+                            <th>Время</th>
+                            <th>Бренд</th>
+                            <th>Год</th>
+                            <th>Комментарий</th>
+                            <th>Статус</th>
+                        </tr>
                     </thead>
                     <tbody>
                     {% for app in appointments %}
-                    <tr>
+                    <tr class="appointment-row">
                         <td class="fw-bold" style="color: #95444d;">{{ forloop.counter }}</td>
-                        <td>{{ app.client.last_name }} {{ app.client.first_name }} {{ app.client.middle_name }}</td>
-                        <td>{{ app.client.phone_number }}</td>
-                        <td>{{ app.service }}</td>
-                        <td>{{ app.date }}</td>
-                        <td>{{ app.time }}</td>
-                        <td>{{ app.brand }}</td>
-                        <td>{{ app.year }}</td>
-                        <td>{{ app.comment }}</td>
+                        <td class="appt-fio">{{ app.client.last_name }} {{ app.client.first_name }} {{ app.client.middle_name }}</td>
+                        <td class="appt-phone">{{ app.client.phone_number }}</td>
+                        <td class="appt-service">{{ app.service }}</td>
+                        <td class="appt-date">{{ app.date }}</td>
+                        <td class="appt-time">{{ app.time }}</td>
+                        <td class="appt-brand">{{ app.brand }}</td>
+                        <td class="appt-year">{{ app.year }}</td>
+                        <td class="appt-comment">{{ app.comment|default:"—" }}</td>
                         <td class="status-cell"
                             data-appointment-id="{{ app.id }}"
                             data-appointment-number="{{ forloop.counter }}">

@@ -381,3 +381,67 @@ function deleteAppointment(appointmentId) {
         showNotification('Ошибка удаления', 'error');
     });
 }
+// Универсальная функция поиска по таблице
+function initTableSearch(searchInputId, tableId, rowClass, countId, getSearchableText) {
+    const searchInput = document.getElementById(searchInputId);
+    if (!searchInput) return;
+
+    searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase().trim();
+        const rows = document.querySelectorAll(`#${tableId} .${rowClass}`);
+        let visibleCount = 0;
+
+        rows.forEach(row => {
+            const searchableText = getSearchableText(row);
+            const matches = searchTerm === '' || searchableText.includes(searchTerm);
+
+            if (matches) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        if (countId) {
+            document.getElementById(countId).textContent = visibleCount;
+        }
+    });
+}
+
+// Инициализация поиска для каждой таблицы
+document.addEventListener('DOMContentLoaded', function() {
+    // Поиск по клиентам
+    initTableSearch('search-clients', 'clients-table', 'client-row', 'clients-count', (row) => {
+        const email = row.querySelector('.client-email')?.textContent.toLowerCase() || '';
+        const fullname = row.querySelector('.client-fullname')?.textContent.toLowerCase() || '';
+        const phone = row.querySelector('.client-phone')?.textContent.toLowerCase() || '';
+        return `${email} ${fullname} ${phone}`;
+    });
+
+    // Поиск по заявкам
+    initTableSearch('search-applications', 'applications-table', 'application-row', 'applications-count', (row) => {
+        const fio = row.querySelector('.app-fio')?.textContent.toLowerCase() || '';
+        const phone = row.querySelector('.app-phone')?.textContent.toLowerCase() || '';
+        const detail = row.querySelector('.app-detail')?.textContent.toLowerCase() || '';
+        const delivery = row.querySelector('.app-delivery')?.textContent.toLowerCase() || '';
+        const payment = row.querySelector('.app-payment')?.textContent.toLowerCase() || '';
+        const reservation = row.querySelector('.app-reservation')?.textContent.toLowerCase() || '';
+        const comment = row.querySelector('.app-comment')?.textContent.toLowerCase() || '';
+        const date = row.querySelector('.app-date')?.textContent.toLowerCase() || '';
+        return `${fio} ${phone} ${detail} ${delivery} ${payment} ${reservation} ${comment} ${date}`;
+    });
+
+    // Поиск по записям на СТО
+    initTableSearch('search-appointments', 'appointments-table', 'appointment-row', 'appointments-count', (row) => {
+        const fio = row.querySelector('.appt-fio')?.textContent.toLowerCase() || '';
+        const phone = row.querySelector('.appt-phone')?.textContent.toLowerCase() || '';
+        const service = row.querySelector('.appt-service')?.textContent.toLowerCase() || '';
+        const date = row.querySelector('.appt-date')?.textContent.toLowerCase() || '';
+        const time = row.querySelector('.appt-time')?.textContent.toLowerCase() || '';
+        const brand = row.querySelector('.appt-brand')?.textContent.toLowerCase() || '';
+        const year = row.querySelector('.appt-year')?.textContent.toLowerCase() || '';
+        const comment = row.querySelector('.appt-comment')?.textContent.toLowerCase() || '';
+        return `${fio} ${phone} ${service} ${date} ${time} ${brand} ${year} ${comment}`;
+    });
+});
