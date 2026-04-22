@@ -445,3 +445,149 @@ document.addEventListener('DOMContentLoaded', function() {
         return `${fio} ${phone} ${service} ${date} ${time} ${brand} ${year} ${comment}`;
     });
 });
+// ============================================
+// Сортировка таблиц по дате с галочками
+// ============================================
+
+// Функция для обновления галочек
+function updateSortChecks(type, order) {
+    const asc = document.getElementById(`check-${type}-asc`);
+    const desc = document.getElementById(`check-${type}-desc`);
+
+    if (asc) asc.textContent = '';
+    if (desc) desc.textContent = '';
+
+    const selected = document.getElementById(`check-${type}-${order}`);
+    if (selected) selected.textContent = '✓';
+}
+
+// Функция для переключения меню
+function toggleSortMenu(event, type) {
+    event.stopPropagation();
+
+    const menuId = `sort-menu-${type}`;
+    const menu = document.getElementById(menuId);
+
+    // Закрываем другие открытые меню
+    document.querySelectorAll('.sort-menu').forEach(m => {
+        if (m.id !== menuId) {
+            m.classList.add('d-none');
+        }
+    });
+
+    // Переключаем текущее меню
+    menu.classList.toggle('d-none');
+
+    // Закрываем при клике вне
+    setTimeout(() => {
+        document.addEventListener('click', function closeMenu(e) {
+            if (!menu.contains(e.target) && !e.target.closest(`[onclick*="toggleSortMenu(event, '${type}')"]`)) {
+                menu.classList.add('d-none');
+                document.removeEventListener('click', closeMenu);
+            }
+        });
+    }, 0);
+}
+
+function parseRussianDate(dateStr) {
+    if (!dateStr) return 0;
+
+    const months = {
+        'января': 0,
+        'февраля': 1,
+        'марта': 2,
+        'апреля': 3,
+        'мая': 4,
+        'июня': 5,
+        'июля': 6,
+        'августа': 7,
+        'сентября': 8,
+        'октября': 9,
+        'ноября': 10,
+        'декабря': 11
+    };
+
+    // формат: "30 апреля 2026 г."
+    const match = dateStr.trim().match(/(\d+)\s+([а-яё]+)\s+(\d{4})/i);
+
+    if (!match) return 0;
+
+    const day = parseInt(match[1], 10);
+    const monthName = match[2].toLowerCase();
+    const year = parseInt(match[3], 10);
+
+    const month = months[monthName];
+
+    if (month === undefined) return 0;
+
+    return new Date(year, month, day).getTime();
+}
+
+// Функция сортировки таблицы
+function sortTableByDate(tableId, rowClass, dateClass, order, type) {
+    const table = document.getElementById(tableId);
+    if (!table) return;
+
+    const tbody = table.querySelector('tbody');
+    const rows = Array.from(tbody.querySelectorAll(`.${rowClass}`));
+
+    // Фильтруем только видимые строки
+    const visibleRows = rows.filter(row => row.style.display !== 'none');
+    const hiddenRows = rows.filter(row => row.style.display === 'none');
+
+    // Сортируем видимые строки
+    visibleRows.sort((a, b) => {
+        let dateA = a.querySelector(`.${dateClass}`)?.textContent || '';
+        let dateB = b.querySelector(`.${dateClass}`)?.textContent || '';
+
+        let timeA = 0;
+        let timeB = 0;
+
+        // Для заявок (формат: "дд.мм.гггг ЧЧ:ММ")
+        if (dateA.includes('.') && dateA.includes(':')) {
+            const partsA = dateA.match(/(\d+)\.(\d+)\.(\d+)\s+(\d+):(\d+)/);
+            const partsB = dateB.match(/(\d+)\.(\d+)\.(\d+)\s+(\d+):(\d+)/);
+            if (partsA && partsB) {
+                const [, dayA, monthA, yearA, hourA, minuteA] = partsA;
+                const [, dayB, monthB, yearB, hourB, minuteB] = partsB;
+                timeA = new Date(yearA, monthA - 1, dayA, hourA, minuteA).getTime();
+                timeB = new Date(yearB, monthB - 1, dayB, hourB, minuteB).getTime();
+            }
+        }
+        // Для записей на СТО (формат: "ГГГГ-ММ-ДД")
+        else {
+            timeA = parseRussianDate(dateA);
+            timeB = parseRussianDate(dateB);
+        }
+
+        if (order === 'asc') {
+            return timeA - timeB;
+        } else {
+            return timeB - timeA;
+        }
+    });
+
+    // Переставляем строки в таблице
+    visibleRows.forEach(row => tbody.appendChild(row));
+    hiddenRows.forEach(row => tbody.appendChild(row));
+
+    // Обновляем галочки
+    updateSortChecks(type, order);
+
+    // Закрываем меню
+    const menu = document.getElementById(`sort-menu-${type}`);
+    if (menu) menu.classList.add('d-none');
+
+    // Обновляем счетчик видимых строк
+    const countSpan = document.getElementById(`${type}-count`);
+    if (countSpan) {
+        countSpan.textContent = visibleRows.length;
+    }
+}
+
+// Закрытие меню при клике вне
+document.addEventListener('click', function() {
+    document.querySelectorAll('.sort-menu').forEach(menu => {
+        menu.classList.add('d-none');
+    });
+});

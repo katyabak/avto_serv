@@ -51,17 +51,18 @@
             </div>
             <!-- Поле поиска -->
             <div class="mb-3">
-                <input type="text" id="search-clients" class="form-control rounded-3 py-2" placeholder="🔍 Поиск по ФИО, email или телефону...">
+                <input type="text" id="search-clients" class="form-control rounded-3 py-2"
+                       placeholder="🔍 Поиск по ФИО, email или телефону...">
             </div>
             <div class="table-responsive">
                 <table class="table table-hover table-bordered" id="clients-table">
                     <thead class="table-light">
-                        <tr>
-                            <th>№</th>
-                            <th>Email</th>
-                            <th>ФИО</th>
-                            <th>Телефон</th>
-                        </tr>
+                    <tr>
+                        <th>№</th>
+                        <th>Email</th>
+                        <th>ФИО</th>
+                        <th>Телефон</th>
+                    </tr>
                     </thead>
                     <tbody>
                     {% for client in clients %}
@@ -87,24 +88,42 @@
             </div>
             <!-- Поле поиска -->
             <div class="mb-3">
-                <input type="text" id="search-applications" class="form-control rounded-3 py-2" placeholder="🔍 Поиск по ФИО, телефону, запчасти, доставке, оплате...">
+                <input type="text" id="search-applications" class="form-control rounded-3 py-2"
+                       placeholder="🔍 Поиск по ФИО, телефону, запчасти, доставке, оплате...">
             </div>
             <div class="table-responsive">
                 <table class="table table-hover table-bordered" id="applications-table">
                     <thead class="table-light">
-                        <tr>
-                            <th>№</th>
-                            <th>ФИО</th>
-                            <th>Телефон</th>
-                            <th class="col-detail">Запчасть</th>
-                            <th>Доставка</th>
-                            <th>Способ оплаты</th>
-                            <th>Резерв</th>
-                            <th>Кол-во дней</th>
-                            <th>Комментарий</th>
-                            <th>Дата</th>
-                            <th>Статус</th>
-                        </tr>
+                    <tr>
+                        <th>№</th>
+                        <th>ФИО</th>
+                        <th>Телефон</th>
+                        <th class="col-detail">Запчасть</th>
+                        <th>Доставка</th>
+                        <th>Способ оплаты</th>
+                        <th>Резерв</th>
+                        <th>Кол-во дней</th>
+                        <th>Комментарий</th>
+                        <th class="sortable-header">
+                            <div class="sort-dropdown-wrapper">
+                                <span>Дата</span>
+                                <i class="fas fa-chevron-down sort-icon"
+                                   onclick="toggleSortMenu(event, 'applications')"></i>
+
+                                <div id="sort-menu-applications" class="sort-menu d-none">
+                                    <div class="sort-option"
+                                         onclick="sortTableByDate('applications-table', 'application-row', 'app-date', 'asc', 'applications')">
+                                        <span id="check-applications-asc">✓</span> По возрастанию (старые сначала)
+                                    </div>
+                                    <div class="sort-option"
+                                         onclick="sortTableByDate('applications-table', 'application-row', 'app-date', 'desc', 'applications')">
+                                        <span id="check-applications-desc"></span> По убыванию (новые сначала)
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th>Статус</th>
+                    </tr>
                     </thead>
                     <tbody>
                     {% for app in applications %}
@@ -145,23 +164,41 @@
             </div>
             <!-- Поле поиска -->
             <div class="mb-3">
-                <input type="text" id="search-appointments" class="form-control rounded-3 py-2" placeholder="🔍 Поиск по ФИО, телефону, услуге, бренду...">
+                <input type="text" id="search-appointments" class="form-control rounded-3 py-2"
+                       placeholder="🔍 Поиск по ФИО, телефону, услуге, бренду...">
             </div>
             <div class="table-responsive">
                 <table class="table table-hover table-bordered" id="appointments-table">
                     <thead class="table-light">
-                        <tr>
-                            <th>№</th>
-                            <th>ФИО</th>
-                            <th>Телефон</th>
-                            <th>Услуга</th>
-                            <th>Дата</th>
-                            <th>Время</th>
-                            <th>Бренд</th>
-                            <th>Год</th>
-                            <th>Комментарий</th>
-                            <th>Статус</th>
-                        </tr>
+                    <tr>
+                        <th>№</th>
+                        <th>ФИО</th>
+                        <th>Телефон</th>
+                        <th>Услуга</th>
+                        <th class="sortable-header">
+                            <div class="sort-dropdown-wrapper">
+                                <span>Дата</span>
+                                <i class="fas fa-chevron-down sort-icon"
+                                   onclick="toggleSortMenu(event, 'appointments')"></i>
+
+                                <div id="sort-menu-appointments" class="sort-menu d-none">
+                                    <div class="sort-option"
+                                         onclick="sortTableByDate('appointments-table', 'appointment-row', 'appt-date', 'asc', 'appointments')">
+                                        <span id="check-appointments-asc">✓</span> По возрастанию
+                                    </div>
+                                    <div class="sort-option"
+                                         onclick="sortTableByDate('appointments-table', 'appointment-row', 'appt-date', 'desc', 'appointments')">
+                                        <span id="check-appointments-desc"></span> По убыванию
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th>Время</th>
+                        <th>Бренд</th>
+                        <th>Год</th>
+                        <th>Комментарий</th>
+                        <th>Статус</th>
+                    </tr>
                     </thead>
                     <tbody>
                     {% for app in appointments %}

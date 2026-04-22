@@ -73,3 +73,70 @@
     word-wrap: break-word;
     white-space: normal;
 }
+
+/* Dropdown сортировки */
+.sort-dropdown-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sort-icon {
+    cursor: pointer;
+    font-size: 12px;
+    color: #95444d;
+    transition: transform 0.2s;
+}
+
+.sort-icon:hover {
+    color: #b85c66;
+}
+
+.sort-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 180px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    z-index: 1000;
+    overflow: hidden;
+    margin-top: 5px;
+}
+
+.sort-option {
+    padding: 10px 14px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sort-option:hover {
+    background: #f8f9fa;
+}
+
+.sort-option span {
+    display: inline-block;
+    width: 20px;
+    color: #95444d;
+    font-weight: bold;
+}
+
+.d-none {
+    display: none;
+}
+
+/* Стили для сортируемого заголовка */
+.sortable-header {
+    cursor: pointer;
+}
+
+.sortable-header:hover {
+    background-color: rgba(149,68,77,0.05);
+}
