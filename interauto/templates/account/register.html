@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load form_tags %}
-
+{% load static %}
 {% block content %}
 <div class="container py-5">
     <div class="row justify-content-center">
@@ -8,7 +8,7 @@
             <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
                 <div class="card-header bg-white border-0 pt-4 pb-0">
                     <div class="d-flex align-items-center gap-3">
-                        <div class="p-3 rounded-3" style="background: white;">
+                        <div class="p-3 rounded-3" style="background: rgba(149,68,77,0.1);">
                             <i class="fas fa-user-plus fs-1" style="color: #95444d;"></i>
                         </div>
                         <div>
@@ -18,36 +18,118 @@
                     </div>
                 </div>
                 <div class="card-body p-4">
-                    <form method="POST">
+                    <form method="POST" id="register-form">
                         {% csrf_token %}
-                        {% for field in form %}
+
                         <div class="mb-3">
-                            {{ field.label_tag }}
-                            {% if field.html_name == "password1" or field.html_name == "password2" %}
+                            <label class="form-label fw-semibold">Email</label>
+                            {{ form.email|add_class:"form-control rounded-3 py-2" }}
+                            {% if form.email.errors %}
+                            <div class="text-danger small mt-1">{{ form.email.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Фамилия</label>
+                                <input type="text"
+                                       name="last_name"
+                                       id="id_last_name"
+                                       class="form-control rounded-3 py-2"
+                                       value="{{ form.last_name.value|default:'' }}"
+                                       oninput="this.value = this.value.replace(/[^а-яА-Яa-zA-Z\s-]/g, '')"
+                                       required>
+                                {% if form.last_name.errors %}
+                                <div class="text-danger small mt-1">{{ form.last_name.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Имя</label>
+                                <input type="text"
+                                       name="first_name"
+                                       id="id_first_name"
+                                       class="form-control rounded-3 py-2"
+                                       value="{{ form.first_name.value|default:'' }}"
+                                       oninput="this.value = this.value.replace(/[^а-яА-Яa-zA-Z\s-]/g, '')"
+                                       required>
+                                {% if form.first_name.errors %}
+                                <div class="text-danger small mt-1">{{ form.first_name.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="mb-3 mt-3">
+                            <label class="form-label fw-semibold">Отчество</label>
+                            <input type="text"
+                                   name="middle_name"
+                                   id="id_middle_name"
+                                   class="form-control rounded-3 py-2"
+                                   value="{{ form.middle_name.value|default:'' }}"
+                                   oninput="this.value = this.value.replace(/[^а-яА-Яa-zA-Z\s-]/g, '')"
+                                   required>
+                            {% if form.middle_name.errors %}
+                            <div class="text-danger small mt-1">{{ form.middle_name.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Телефон</label>
+                            <input type="tel"
+                                   name="phone_number"
+                                   id="id_phone_number"
+                                   class="form-control rounded-3 py-2"
+                                   placeholder="+7 XXX XXX XX XX"
+                                   value="{{ form.phone_number.value|default:'' }}"
+                                   oninput="this.value = this.value.replace(/[^0-9+]/g, '').slice(0, 12)"
+                                   maxlength="12"
+                                   required>
+                            {% if form.phone_number.errors %}
+                            <div class="text-danger small mt-1">{{ form.phone_number.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Пароль</label>
                             <div class="position-relative">
-                                <input type="password" name="{{ field.html_name }}" id="{{ field.html_name }}"
-                                       class="form-control rounded-3 py-2" style="padding-right: 45px;"/>
+                                <input type="password"
+                                       name="password1"
+                                       id="id_password1"
+                                       class="form-control rounded-3 py-2"
+                                       style="padding-right: 45px;"
+                                       required>
                                 <button type="button"
                                         class="btn btn-link position-absolute end-0 top-0 mt-2 me-2 text-decoration-none toggle-password"
-                                        data-target="{{ field.html_name }}" style="color: #95444d;">
+                                        data-target="id_password1"
+                                        style="color: #95444d; z-index: 10;">
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </div>
-                            {% else %}
-                            {{ field|add_class:"form-control rounded-3 py-2" }}
-                            {% endif %}
-                            {% if field.errors %}
-                            <div class="text-danger small mt-1">
-                                {% for error in field.errors %}
-                                {{ error }}
-                                {% endfor %}
-                            </div>
-                            {% endif %}
-                            {% if field.help_text %}
-                            <small class="text-muted form-text">{{ field.help_text }}</small>
+                            {% if form.password1.errors %}
+                            <div class="text-danger small mt-1">{{ form.password1.errors }}</div>
                             {% endif %}
                         </div>
-                        {% endfor %}
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Повторите пароль</label>
+                            <div class="position-relative">
+                                <input type="password"
+                                       name="password2"
+                                       id="id_password2"
+                                       class="form-control rounded-3 py-2"
+                                       style="padding-right: 45px;"
+                                       required>
+                                <button type="button"
+                                        class="btn btn-link position-absolute end-0 top-0 mt-2 me-2 text-decoration-none toggle-password"
+                                        data-target="id_password2"
+                                        style="color: #95444d; z-index: 10;">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            {% if form.password2.errors %}
+                            <div class="text-danger small mt-1">{{ form.password2.errors }}</div>
+                            {% endif %}
+                        </div>
+
                         <div class="d-grid gap-2 mt-4">
                             <button type="submit" class="btn py-3 rounded-3 fw-bold"
                                     style="background: #95444d; color: white; border: none;">
@@ -69,24 +151,5 @@
     </div>
 </div>
 
-<script>
-  document.querySelectorAll('.toggle-password').forEach(button => {
-    button.addEventListener('click', () => {
-      const targetId = button.dataset.target;
-      const input = document.getElementById(targetId);
-      const icon = button.querySelector('i');
-
-      if (input.type === 'password') {
-        input.type = 'text';
-        icon.classList.remove('fa-eye');
-        icon.classList.add('fa-eye-slash');
-      } else {
-        input.type = 'password';
-        icon.classList.remove('fa-eye-slash');
-        icon.classList.add('fa-eye');
-      }
-    });
-  });
-
-</script>
+<script src="{% static 'js/register.js' %}"></script>
 {% endblock %}

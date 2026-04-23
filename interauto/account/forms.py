@@ -13,7 +13,7 @@ class RegisterForm(forms.ModelForm):
 
     class Meta:
         model = Client
-        fields = ('email', 'first_name', 'last_name', 'phone_number')
+        fields = ('email', 'first_name', 'last_name', 'middle_name', 'phone_number')
         labels = {
             'email': 'Email',
             'first_name': 'Имя',
@@ -21,6 +21,39 @@ class RegisterForm(forms.ModelForm):
             'middle_name': 'Отчество',
             'phone_number': 'Телефон',
         }
+
+    def clean_first_name(self):
+        first_name = self.cleaned_data.get('first_name')
+        if first_name and not first_name.replace(' ', '').isalpha():
+            raise forms.ValidationError('Имя должно содержать только буквы')
+        return first_name
+
+    def clean_last_name(self):
+        last_name = self.cleaned_data.get('last_name')
+        if last_name and not last_name.replace(' ', '').isalpha():
+            raise forms.ValidationError('Фамилия должна содержать только буквы')
+        return last_name
+
+    def clean_middle_name(self):
+        middle_name = self.cleaned_data.get('middle_name')
+        if middle_name and not middle_name.replace(' ', '').isalpha():
+            raise forms.ValidationError('Отчество должно содержать только буквы')
+        return middle_name
+
+    def clean_phone_number(self):
+        phone = self.cleaned_data.get('phone_number')
+        if phone:
+            # Удаляем все нецифровые символы
+            digits_only = ''.join(filter(str.isdigit, phone))
+            if not digits_only:
+                raise forms.ValidationError('Введите номер телефона')
+            if len(digits_only) < 10:
+                raise forms.ValidationError('Номер телефона слишком короткий')
+            if len(digits_only) > 11:
+                raise forms.ValidationError('Номер телефона слишком длинный (максимум 11 цифр)')
+            # Возвращаем только цифры (без +)
+            return digits_only
+        return phone
 
     def clean_password2(self):
         p1 = self.cleaned_data.get('password1')
