@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load form_tags %}
+{% load static %}
 
 {% block content %}
 <div class="container py-5">
@@ -19,14 +20,63 @@
                 </div>
                 <div class="card-body p-4 p-lg-5">
                     {% if edit_mode %}
-                    <form method="post">
+                    <form method="post" id="profile-form">
                         {% csrf_token %}
-                        {% for field in form %}
+
                         <div class="mb-3">
-                            {{ field.label_tag }}
-                            {{ field|add_class:"form-control rounded-3 py-2" }}
+                            <label class="form-label fw-semibold">Email</label>
+                            {{ form.email|add_class:"form-control rounded-3 py-2" }}
+                            <div class="text-danger small mt-1" id="email-error"></div>
                         </div>
-                        {% endfor %}
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Фамилия</label>
+                            <input type="text"
+                                   name="last_name"
+                                   id="id_last_name"
+                                   class="form-control rounded-3 py-2"
+                                   value="{{ form.last_name.value|default:'' }}"
+                                   oninput="this.value = this.value.replace(/[^а-яА-Яa-zA-Z\s-]/g, '')"
+                                   required>
+                            <div class="text-danger small mt-1" id="last-name-error"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Имя</label>
+                            <input type="text"
+                                   name="first_name"
+                                   id="id_first_name"
+                                   class="form-control rounded-3 py-2"
+                                   value="{{ form.first_name.value|default:'' }}"
+                                   oninput="this.value = this.value.replace(/[^а-яА-Яa-zA-Z\s-]/g, '')"
+                                   required>
+                            <div class="text-danger small mt-1" id="first-name-error"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Отчество</label>
+                            <input type="text"
+                                   name="middle_name"
+                                   id="id_middle_name"
+                                   class="form-control rounded-3 py-2"
+                                   value="{{ form.middle_name.value|default:'' }}"
+                                   oninput="this.value = this.value.replace(/[^а-яА-Яa-zA-Z\s-]/g, '')">
+                            <div class="text-danger small mt-1" id="middle-name-error"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Телефон</label>
+                            <input type="tel"
+                                   name="phone_number"
+                                   id="id_phone_number"
+                                   class="form-control rounded-3 py-2"
+                                   value="{{ form.phone_number.value|default:'' }}"
+                                   maxlength="12"
+                                   required>
+                            <small class="text-muted d-block mt-1">Формат: +7XXXXXXXXXX (до 11 цифр)</small>
+                            <div class="text-danger small mt-1" id="phone-error"></div>
+                        </div>
+
                         <div class="d-grid gap-2 mt-4">
                             <button type="submit" class="btn py-3 rounded-3 fw-bold"
                                     style="background: #95444d; color: white; border: none;">
@@ -149,4 +199,6 @@
         </div>
     </div>
 </div>
+
+<script src="{% static 'js/profile.js' %}"></script>
 {% endblock %}

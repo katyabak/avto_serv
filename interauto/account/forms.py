@@ -87,6 +87,49 @@ class ClientUpdateForm(forms.ModelForm):
             'phone_number': 'Телефон',
         }
 
+    def clean_first_name(self):
+        first_name = self.cleaned_data.get('first_name')
+        if first_name:
+            first_name = first_name.strip()
+            if len(first_name) < 2:
+                raise forms.ValidationError('Имя должно содержать минимум 2 символа')
+            if not first_name.replace(' ', '').isalpha():
+                raise forms.ValidationError('Имя должно содержать только буквы')
+        return first_name
+
+    def clean_last_name(self):
+        last_name = self.cleaned_data.get('last_name')
+        if last_name:
+            last_name = last_name.strip()
+            if len(last_name) < 2:
+                raise forms.ValidationError('Фамилия должна содержать минимум 2 символа')
+            if not last_name.replace(' ', '').isalpha():
+                raise forms.ValidationError('Фамилия должна содержать только буквы')
+        return last_name
+
+    def clean_middle_name(self):
+        middle_name = self.cleaned_data.get('middle_name')
+        if middle_name:
+            middle_name = middle_name.strip()
+            if middle_name and len(middle_name) < 2:
+                raise forms.ValidationError('Отчество должно содержать минимум 2 символа')
+            if middle_name and not middle_name.replace(' ', '').isalpha():
+                raise forms.ValidationError('Отчество должно содержать только буквы')
+        return middle_name
+
+    def clean_phone_number(self):
+        phone = self.cleaned_data.get('phone_number')
+        if phone:
+            digits_only = ''.join(filter(str.isdigit, phone))
+            if not digits_only:
+                raise forms.ValidationError('Введите номер телефона')
+            if len(digits_only) < 10:
+                raise forms.ValidationError('Номер телефона слишком короткий (минимум 10 цифр)')
+            if len(digits_only) > 11:
+                raise forms.ValidationError('Номер телефона слишком длинный (максимум 11 цифр)')
+            return digits_only
+        return phone
+
 
 class CustomPasswordResetForm(PasswordResetForm):
     email = forms.EmailField(label='Email', max_length=254)
