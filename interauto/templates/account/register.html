@@ -130,6 +130,17 @@
                             {% endif %}
                         </div>
 
+                        <!-- Согласие с политикой -->
+                        <div class="mb-3 text-center">
+                            <small class="text-muted">
+                                Нажимая на кнопку «Зарегистрироваться», Вы соглашаетесь с принятой на сайте
+                                <a href="{% static 'docs/policy.pdf' %}" target="_blank" class="text-decoration-none"
+                                   style="color: #95444d;">
+                                    политикой обработки персональных данных
+                                </a>.
+                            </small>
+                        </div>
+
                         <div class="d-grid gap-2 mt-4">
                             <button type="submit" class="btn py-3 rounded-3 fw-bold"
                                     style="background: #95444d; color: white; border: none;">

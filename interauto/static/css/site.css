@@ -9,3 +9,33 @@ body { background: #1e1e1e; }
   font-style: normal;
   font-display: swap;
 }
+
+/* ============================================
+   Стили для футера (footer)
+   ============================================ */
+
+/* Стили для ссылок в футере */
+.footer-link {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    font-size: 13px;
+}
+
+.footer-link:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.footer-policy-column {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+@media (max-width: 768px) {
+    .footer-policy-column {
+        align-items: center;
+        margin-top: 15px;
+    }
+}

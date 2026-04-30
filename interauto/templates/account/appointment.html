@@ -144,7 +144,18 @@
                             </div>
                         </div>
 
-                        <div class="d-grid gap-2 mt-4">
+                        <!-- Согласие с политикой -->
+                        <div class="mt-3 mb-3 text-left">
+                            <small class="text-muted">
+                                Нажимая на кнопку «Записаться», Вы соглашаетесь с
+                                <a href="{% static 'docs/policy.pdf' %}" target="_blank" class="text-decoration-none"
+                                   style="color: #95444d;">
+                                    Политикой обработки персональных данных
+                                </a>
+                            </small>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-2">
                             <button type="submit" class="btn btn-primary py-3 rounded-3 fw-bold"
                                     style="background: #95444d; border: none;">
                                 <i class="fas fa-check-circle me-2"></i>Записаться
@@ -170,6 +181,7 @@
     // Передаем список марок и услуг в JavaScript
     window.brandsList = {{ brands|safe }};
     window.servicesList = {{ service|safe }};
+
 
 
 
